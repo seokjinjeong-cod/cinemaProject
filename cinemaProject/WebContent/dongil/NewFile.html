@@ -79,7 +79,6 @@
       for (let i = 1; i <= 80; i++) {
         let td = document.createElement('td');
         td.setAttribute('onclick', 'seatSelect(event)');
-        td.onclick='seatSelect(event)';
   
         td.innerHTML = i;
         td.id = 'seat' + i;
@@ -96,14 +95,15 @@
       let div = document.getElementById('"'+title+','+season+','+location+'"');
       div.appendChild(table);
   
-      function seatSelect(e) {
+     
+
+    }
+    function seatSelect(e) {
         let tdTar = e.target;
         console.log(tdTar)
         tdTar.style.backgroundColor = 'red';
   
       }
-
-    }
   </script>
 </body>
 
