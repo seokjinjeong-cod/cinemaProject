@@ -6,6 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+
+  </style>
 </head>
 
 <body>
@@ -28,33 +31,33 @@
 
   <script>
     //무비인포
-    function movieInfo(e){
-      let startDate=e.target.parentNode.querySelector('#startdate').value;
-      let endDate=e.target.parentNode.querySelector('#enddate').value;
-      let title=e.target.parentNode.querySelector('#title').value;
-      let location=e.target.parentNode.querySelector('#location').value;
-      console.log(startDate,endDate,title,location);
+    function movieInfo(e) {
+      let startDate = e.target.parentNode.querySelector('#startdate').value;
+      let endDate = e.target.parentNode.querySelector('#enddate').value;
+      let title = e.target.parentNode.querySelector('#title').value;
+      let location = e.target.parentNode.querySelector('#location').value;
+      console.log(startDate, endDate, title, location);
 
-      let season=movieDate(startDate,endDate);
+      let season = movieDate(startDate, endDate);
       // console.log(seasonInfo);
-      for(let i =0 ;i<season.length;i++){
+      for (let i = 0; i < season.length; i++) {
         console.log(season[i]);
-        let cinema=document.createElement("div");
-        cinema.id='"'+title+','+season[i]+','+location+'"';//+title+",'+season[i]+','"+location+
-        let divShow=document.getElementById('show');
+        let cinema = document.createElement("div");
+        cinema.id = '"' + title + ',' + season[i] + ',' + location + '"'; //+title+",'+season[i]+','"+location+
+        let divShow = document.getElementById('show');
         divShow.appendChild(cinema);
-        seatMake(title,season[i],location);
-        
+        seatMake(title, season[i], location);
+
       }
       window.alert('등록완료');
     }
     //상영날짜등록
-    function movieDate(start,end) {
+    function movieDate(start, end) {
       const endDate = new Date(end);
       const startDate = new Date(start);
-      let season=[];
+      let season = [];
       let minus = endDate.getDate() - startDate.getDate();
-      
+
       let saveDate = new Date(start);
       for (let i = 0; i <= minus; i++) {
         // (new Date(saveDate.setDate(startDate.getDate() + i)).toLocaleString());
@@ -66,7 +69,13 @@
     }
 
     // 좌석 테이블등록
-    function seatMake(title,season,location){
+    function seatMake(title, season, location) {
+      let div = document.getElementById('"' + title + ',' + season + ',' + location + '"');
+      let cinemaInfo='"상영관 정보 : '+location+","+title+","+season+'"';
+      let h1Tag=document.createElement('h1');
+      h1Tag.innerHTML=cinemaInfo;
+      div.appendChild(h1Tag);
+      
       let table = document.createElement('table');
       table.setAttribute('border', '1px');
       table.style.textAlign = 'center';
@@ -79,13 +88,12 @@
       for (let i = 1; i <= 80; i++) {
         let td = document.createElement('td');
         td.setAttribute('onclick', 'seatSelect(event)');
-        td.onclick='seatSelect(event)';
-  
+
         td.innerHTML = i;
         td.id = 'seat' + i;
         if (i % 10 != 0) {
           tr.appendChild(td);
-  
+
         } else {
           tr.appendChild(td);
           tr = document.createElement('tr');
@@ -93,16 +101,21 @@
         tbody.appendChild(tr);
       }
       table.appendChild(tbody);
-      let div = document.getElementById('"'+title+','+season+','+location+'"');
+      
+      div = document.getElementById('"' + title + ',' + season + ',' + location + '"');
       div.appendChild(table);
-  
-      function seatSelect(e) {
-        let tdTar = e.target;
-        console.log(tdTar)
-        tdTar.style.backgroundColor = 'red';
-  
-      }
 
+
+
+    }
+
+    function seatSelect(e) {
+      let tdTar = e.target;
+      if (tdTar.style.backgroundColor == '') {
+        tdTar.style.backgroundColor = 'red';
+      } else {
+        tdTar.style.backgroundColor = '';
+      }
     }
   </script>
 </body>
