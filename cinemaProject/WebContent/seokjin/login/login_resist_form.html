@@ -1,61 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Welcome to Daegu Cinema</title>
-<link rel="stylesheet" href="style.css">
+	<meta charset="UTF-8">
+	<title>Welcome to Daegu Cinema</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+	<script src="../../jquery/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
 	<div class="wrap">
-		<div class="title"><h2>Daegu Cinema</h2></div>
+		<div class="title">
+			<h2>Daegu Cinema</h2>
+		</div>
 		<div class="form-wrap">
 			<div class="button-wrap">
 				<div id="btn"></div>
-				<button type="button" class="togglebtn" onclick="login()">LOG
-					IN</button>
+				<button type="button" class="togglebtn" onclick="login()">LOGIN</button>
 				<button type="button" class="togglebtn" onclick="register()">REGISTER</button>
 			</div>
 			<div class="social-icons">
-				<img src="img/fb.png" alt="facebook"> <img src="img/tw.png"
-					alt="twitter"> <img src="img/gl.png" alt="google">
+				<img src="img/fb.png" alt="facebook">
+				<img src="img/tw.png" alt="twitter">
+				<img src="img/gl.png" alt="google">
 			</div>
 			<form id="login" action="" class="input-group">
-				<input type="text" class="input-field"
-					placeholder="User name or Email" required> <input
-					type="password" class="input-field" placeholder="Enter Password"
-					required> <input type="checkbox" class="checkbox"><span>Remember
-					Password</span>
-				<button class="submit">Login</button>
+				<input type="text" id="loginId" class="input-field" placeholder="Enter Id" required>
+				<input type="password" id="loginPw" class="input-field" placeholder="Enter Password" required>
+				<button type="button" class="submit" onclick="userLogin()">Login</button>
 			</form>
 			<form id="register" action="" class="input-group">
-				<input type="text" class="input-field"
-					placeholder="User name or Email" required> <input
-					type="email" class="input-field" placeholder="Your Email" required>
-				<input type="password" class="input-field"
-					placeholder="Enter Password" required> <input
-					type="checkbox" class="checkbox"><span>Terms and
-					conditions</span>
-				<button class="submit">REGISTER</button>
+				<input type="text" id="joinId" class="input-field" placeholder="Id" required>
+				<input type="password" id="joinPw" class="input-field" placeholder="Password" required>
+				<input type="text" id="joinName" class="input-field" placeholder="Name" required>
+				<input type='radio' name='gender' value='male' checked>남성
+				<input type='radio' name='gender' value='female'>여성
+				<input type="text" id="joinBirth" class="input-field" placeholder="Birth ex)YYMMDD" required>
+				<button type="button" class="submit" onclick="join()">REGISTER</button>
 			</form>
 		</div>
 	</div>
 	<script>
-            var x = document.getElementById("login");
-            var y = document.getElementById("register");
-            var z = document.getElementById("btn");
-            
-            
-            function login(){
-                x.style.left = "50px";
-                y.style.left = "450px";
-                z.style.left = "0";
-            }
+		var x = document.getElementById("login");
+		var y = document.getElementById("register");
+		var z = document.getElementById("btn");
 
-            function register(){
-                x.style.left = "-400px";
-                y.style.left = "50px";
-                z.style.left = "110px";
-            }
-        </script>
+		function login() {
+			x.style.left = "50px";
+			y.style.left = "450px";
+			z.style.left = "0";
+		}
+
+		function register() {
+			x.style.left = "-400px";
+			y.style.left = "50px";
+			z.style.left = "110px";
+		}
+
+		// function checkInfo() {
+			
+		// }
+		
+		function userLogin() {
+			let id = $('#loginId').val();
+			let pw = $('#loginPw').val();
+			console.log(id);
+			console.log(pw);
+			
+			let xhtp = new XMLHttpRequest();
+			xhtp.onload = function() {
+				let data = JSON.parse(xhtp.responseText);
+				console.log(data);
+				if(data.retCode == 'admin'){
+					window.alert('관리자로 로그인하였습니다.');
+					return;
+				} else if(data.retCode == 'member') {
+					window.alert('회원으로 로그인하였습니다.');
+					return;
+				} else if(data.retCode == 'fail') {
+					window.alert('아이디 또는 패스워드가 틀렸습니다.');
+					return;
+				}
+			}
+			xhtp.open('post', '../../MemberServlet');
+			xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhtp.send('id=' + id + '&pw=' + pw + '&cmd=login');
+		}
+
+		function join() {
+			let id = $('#joinId').val();
+			let pw = $('#joinPw').val();
+			let name = $('#joinName').val();
+			let gender = $('input[name=gender]:checked').val();
+			let birth = $('#joinBirth').val();
+			console.log(id);
+			console.log(pw);
+			console.log(name);
+			console.log(gender);
+			console.log(birth);
+			// checkInfo();
+
+			let xhtp = new XMLHttpRequest();
+			xhtp.onload = function() {
+				let data = JSON.parse(xhtp.responseText);
+				console.log(data);
+				if(data.retCode == 'success'){
+					window.alert('회원가입이 완료되었습니다.');
+					return;
+				}
+				window.alert('이미 존재하는 아이디입니다.');
+			} 
+			xhtp.open('post', '../../MemberServlet');
+			xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhtp.send('id=' + id + '&pw=' + pw + '&name=' + name + '&gender=' + gender + '&birth=' + birth + '&cmd=join');
+		}
+	</script>
 </body>
 </html>
