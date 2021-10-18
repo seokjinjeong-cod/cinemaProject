@@ -59,11 +59,12 @@
 			z.style.left = "110px";
 		}
 
+		// 쿠키(보류)
 		function setCookie(userId) {
 			document.cookie = userId;
 		}
 		
-		
+		// 로그인
 		function userLogin() {
 			let id = $('#loginId').val();
 			let pw = $('#loginPw').val();
@@ -93,6 +94,7 @@
 			xhtp.send('id=' + id + '&pw=' + pw + '&cmd=login');
 		}
 
+		// 회원가입
 		function join() {
 			let id = $('#joinId').val();
 			let pw = $('#joinPw').val();

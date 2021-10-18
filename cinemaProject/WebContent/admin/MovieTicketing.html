@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<style>
+		#showposter {
+			margin: 10px;
+
+		}
+
+		#showtitle {
+			text-align: center;
+			float: block;
+
+		}
+
+		section {
+			border: 1px solid black;
+			width: 300px;
+			height: 500px;
+			float: left;
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="showmovie">
+		<h1>현재상영작</h1>
+
+	</div>
+
+	<script>
+		$.ajax({
+			url: '../GetScreenInfo',
+			tyoe: 'get',
+			dataType: 'json',
+			success: function (result) {
+				//성공화면
+				console.log(result);
+				userShowMovie(result)
+			},
+			error: function () {
+				//에러화면
+			}
+		});
+
+		function userShowMovie(result) {
+			let title = [];
+			let location = [];
+			for (let field in result) {
+				title.push(result[field].title);
+				// let startdate=result[field].startdate;
+				location.push(result[field].location);
+				// let location=result[field].location;
+				// let screentime=result[field].screentime;
+				// let img = result[field].img;
+				// let seatcnt=result[field].seatcnt;
+				// console.log(title,startdate,location,screentime,img,seatcnt);
+			}
+			let img;
+			let uniqueTitle = uniqueFnc(title);
+			let uniqueLocation = uniqueFnc(location);
+			let select
+			let i = 0;
+			for (let field in result) {
+				if (uniqueTitle[i] == result[field].title) {
+					img = result[field].img;
+					let section = document.createElement("section")
+					section.id = 'section' + result[field].title + ',' + result[field].startdate + ',' + result[field].location +
+					'';
+					let div = document.createElement("div");
+					let outerdiv = document.getElementById('showmovie');
+					div.id = 'showtitle';
+					div.innerHTML = uniqueTitle[i];
+					section.appendChild(div);
+					div = document.createElement('div');
+					div.id = 'showposter';
+					div.style.float = 'left';
+					div.innerHTML = '<img width="200px" height="300px" ; src="../upload/' + img + '">';
+					div.setAttribute('onclick', 'movieSelect(event)');
+					section.appendChild(div);
+					let dateInput = document.createElement('input');
+					// dateInput.id='watchingDate';
+					dateInput.type = 'text';
+					section.appendChild(dateInput);
+					dateInput.setAttribute('type', 'date');
+					dateInput.id = 'showDate';
+					select = document.createElement('select');
+
+					for (let field in uniqueLocation) {
+						let option = document.createElement('option');
+						option.id = 'showLoacation';
+						option.innerHTML = uniqueLocation[field];
+						select.appendChild(option);
+					}
+					let submitBtn = document.createElement('button');
+					submitBtn.innerHTML = '조회';
+					submitBtn.setAttribute('onclick', 'showMovieList(event)');
+					section.appendChild(select);
+					section.appendChild(submitBtn);
+					outerdiv.appendChild(section);
+					i++;
+					if (i == uniqueTitle.length)
+						break;
+				}
+			}
+
+
+			console.log(img);
+		}
+
+		function showMovieList(e) {
+			e.preventDefault();
+			let title = e.target.parentNode.childNodes[0].firstChild.nodeValue;
+			let date = e.target.parentNode.childNodes[2].value;
+			let location = e.target.parentNode.childNodes[3].value;
+			$.ajax({
+				url: '../ShowScreenServ',
+				type: 'GET',
+				data: "title=" + title + "&date=" + date + "&location=" + location + "",
+				processData: false,
+				contentType: false,
+				dataType: 'json',
+				success: function (result) {
+					alert('성공');
+					//	$('#frm>input').not('[type="submit"]').val('');
+					for (let obj of result) {
+						let div = document.createElement('div');
+						div.setAttribute('onclick', 'seatFnc(event)');
+						div.id = '"' + obj.screentime + '"';
+						div.innerHTML = obj.screentime;
+						let sectionTag = document.getElementById('section' + title + ',' + date + ',' + location + '');
+						sectionTag.appendChild(div);
+					}
+				},
+				error: function () {
+					alert('실패');
+				}
+			});
+		}
+
+		function seatFnc(e) {
+			e.preventDefault();
+			console.log(e.target);
+			let table = document.createElement('table');
+			table.setAttribute('border', '1px');
+			table.style.textAlign = 'center';
+			table.style.width = '500px';
+			table.style.height = '400px';
+			// table.style.display = 'none';
+			let tbody = document.createElement('tbody');
+			let tr;
+			tr = document.createElement('tr');
+			for (let i = 1; i <= 80; i++) {
+				let td = document.createElement('td');
+				td.setAttribute('onclick', 'seatSelect(event)');
+
+				td.innerHTML = i;
+				td.id = 'seat' + i;
+				if (i % 10 != 0) {
+					tr.appendChild(td);
+
+				} else {
+					tr.appendChild(td);
+					tr = document.createElement('tr');
+				}
+				tbody.appendChild(tr);
+			}
+			table.appendChild(tbody);
+
+			let div = e.target;
+			div.appendChild(table);
+		}
+
+		//좌석 선택시 색변경
+		function seatSelect(e) {
+			let divTag=e.target.parentNode.parentNode.parentNode.parentNode;
+			divTag.setAttribute('onclick','');
+			let tdTar = e.target;
+			if (tdTar.style.backgroundColor == '') {
+				tdTar.style.backgroundColor = 'red';
+			} else {
+				tdTar.style.backgroundColor = '';
+			}
+		}
+
+		function uniqueFnc(obj) {
+			let uniqueArr = [];
+			obj.forEach((e) => {
+				if (!uniqueArr.includes(e)) {
+					uniqueArr.push(e);
+				}
+			});
+			return uniqueArr;
+		}
+	</script>
+</body>
+
+</html>

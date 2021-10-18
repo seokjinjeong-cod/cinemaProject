@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+
+<style>
+</style>
+</head>
+
+<body>
+	<button id='makeBtn' onclick=uploadFnc(event);>상영정보 등록</button>
+	<button id='searchBtn'onclick=searchScreen(event);>상영정보 조회</button>
+	<form id='frm' method='post' enctype='multipart/form-data'
+		onsubmit='movieInfo(event)' style="display: none";>
+		상영시작일 : <input type="date" id='startdate' name='startdate'><br>
+		상영종료일 : <input type="date" id='enddate' name='enddate'><br>
+		제목 : <input type="text" id='title' name='title'><br> 상영관
+		: <input type="text" id='location' name='location'><br>
+		시간 : <br> <input type="checkbox" name="screentime"
+			value="09:00-12:00">09:00-12:00 <input type="checkbox"
+			name="screentime" value="10:00-13:00">10:00-13:00 <input
+			type="checkbox" name="screentime" value="11:00-14:00">11:00-14:00<br>
+		<input type="checkbox" name="screentime" value="12:00-15:00">12:00-15:00
+		<input type="checkbox" name="screentime" value="13:00-16:00">13:00-16:00
+		<input type="checkbox" name="screentime" value="14:00-17:00">14:00-17:00<br>
+		<input type="checkbox" name="screentime" value="15:00-18:00">15:00-18:00
+		<input type="checkbox" name="screentime" value="16:00-19:00">16:00-19:00
+		<input type="checkbox" name="screentime" value="17:00-20:00">17:00-20:00<br>
+		포스터 : <input type='file' name='file'><br> <input
+			type='submit' value='상영정보 등록'>
+	</form>
+	<div id="find"></div>
+	<div id="show"></div>
+
+
+	<script>
+
+    function searchScreen() 
+    
+    {
+    	let findTable=document.getElementById('findScreen');
+    	if(findTable)
+   		{
+	    	console.log("있음!");
+	    	findTable.remove();
+   		}
+    	let frmTag=document.getElementById("frm");
+    	frmTag.style="display:none";
+		$.ajax({
+			url : '../MovieSearchServ',
+			type : 'GET',
+			processData : false,
+			contentType : false,
+			dataType : 'json',
+			success : function(result) {
+
+				showScreen(result);
+			},
+			error : function() {
+				alert('실패');
+			}
+		});
+
+	}
+		//무비인포
+		function movieInfo(e) {
+			e.preventDefault();
+			let frm = document.getElementById('frm');
+			let data = new FormData(frm);
+//			for (let i = 0; i < season.length; i++) {
+//				//form startdate 반복해서 상영날짜만큼 생성
+//				changeSerialize(formData, startdate, season[i]);
+//				console.log(season[i]);
+//				seatMake(formData[2].value, season[i], formData[3].value);//title, season, location (cnt추가)
+//			}
+			// console.log(formData);
+			$.ajax({
+				url : '../MovieUploadServlet',
+				type : $('#frm').attr('method'),
+				data : data,
+				processData : false,
+				contentType : false,
+				dataType : 'json',
+				success : function(result) {
+					alert('성공');
+				//	$('#frm>input').not('[type="submit"]').val('');
+					console.log(result);
+
+				},
+				error : function() {
+					alert('실패');
+				}
+			});
+
+		}
+
+
+
+
+
+
+		// 좌석 테이블등록
+		function seatMake(title, season, location) {
+			let cinema = document.createElement("div");
+			cinema.id = '"' + title + ',' + season + ',' + location + '"'; //+title+",'+season[i]+','"+location+
+			let divShow = document.getElementById('show');
+			divShow.appendChild(cinema);
+			// consloe.log(title, season, location);
+			let div = document.getElementById('"' + title + ',' + season + ','
+					+ location + '"');
+			let cinemaInfo = '"상영관 정보 : ' + location + "," + title + ","
+					+ season + '"';
+			let h1Tag = document.createElement('h1');
+			h1Tag.innerHTML = cinemaInfo;
+			div.appendChild(h1Tag);
+
+			let table = document.createElement('table');
+			table.setAttribute('border', '1px');
+			table.style.textAlign = 'center';
+			table.style.width = '500px';
+			table.style.height = '400px';
+			// table.style.display = 'none';
+			let tbody = document.createElement('tbody');
+			let tr;
+			tr = document.createElement('tr');
+			for (let i = 1; i <= 80; i++) {
+				let td = document.createElement('td');
+				td.setAttribute('onclick', 'seatSelect(event)');
+
+				td.innerHTML = i;
+				td.id = 'seat' + i;
+				if (i % 10 != 0) {
+					tr.appendChild(td);
+
+				} else {
+					tr.appendChild(td);
+					tr = document.createElement('tr');
+				}
+				tbody.appendChild(tr);
+			}
+			table.appendChild(tbody);
+
+			div = document.getElementById('"' + title + ',' + season + ','
+					+ location + '"');
+			div.appendChild(table);
+
+		}
+//좌석 선택시 색변경
+		function seatSelect(e) {
+			let tdTar = e.target;
+			if (tdTar.style.backgroundColor == '') {
+				tdTar.style.backgroundColor = 'red';
+			} else {
+				tdTar.style.backgroundColor = '';
+			}
+		}
+	
+		function uploadFnc(e){
+			let frmTag=document.getElementById('frm');
+				frmTag.style="display:";
+			let findTable=document.getElementById('findScreen');
+			if(findTable)
+			{
+				findTable.style="display:none";
+			}
+		}
+		
+
+		function showScreen(result) {
+		 	    let table=document.createElement('table');
+					table.setAttribute('border','1');
+					table.id='findScreen';
+					let div=document.getElementById('find');
+					let tbody=document.createElement('tbody');
+					let thead=document.createElement('thead');
+					thead.innerHTML='<thead><th>제목</th><th>상영일</th><th>상영관</th><th>상영시간</th><th>총좌석수</th><th>삭제</th></thead>';
+					table.appendChild(thead);
+					let btn;
+					let i=0;
+					for(let obj of result)
+					{
+						let tr=document.createElement('tr');
+						for(let field in obj)
+						{
+							let td=document.createElement('td');
+							td.innerHTML=obj[field];
+							tr.appendChild(td);
+							btn=document.createElement('button');
+							btn.setAttribute('onclick','deleteFnc(event)');
+							btn.innerHTML='삭제';
+							btn.id="delete"+i++;
+						}
+						tr.appendChild(btn);
+						tbody.appendChild(tr);
+					}
+					table.appendChild(tbody);
+					div.appendChild(table);
+		    }
+		// ,startdate":dstartdate,"location":dlocation,"screentime":dscreentime
+		function deleteFnc(e){
+			
+			let dtitle=e.target.parentNode.childNodes[0].firstChild.nodeValue;
+			let dstartdate=e.target.parentNode.childNodes[1].firstChild.nodeValue;
+			let dlocation=e.target.parentNode.childNodes[2].firstChild.nodeValue;
+			let dscreentime=e.target.parentNode.childNodes[3].firstChild.nodeValue;
+//				e.preventDefault();
+			$.ajax({
+				url : '../MovieDeleteServlet',
+				type : 'GET',
+				data : "title="+dtitle+"&startdate="+dstartdate+"&location="+dlocation+"&screentime="+dscreentime+"",
+				processData : false,
+				contentType : false,
+				dataType : 'json',
+				success : function(result) {
+					searchScreen();
+					alert('성공');
+				},
+				error : function() {
+					alert('실패');
+				}
+			});
+
+					// //상영날짜등록
+		// function movieDate(start, end) {
+		// 	const endDate = new Date(end);
+		// 	const startDate = new Date(start);
+		// 	let season = [];
+		// 	let minus = endDate.getDate() - startDate.getDate();
+
+		// 	let saveDate = new Date(start);
+		// 	for (let i = 0; i <= minus; i++) {
+		// 		// (new Date(saveDate.setDate(startDate.getDate() + i)).toLocaleString());
+		// 		saveDate.setDate(startDate.getDate() + i);
+		// 		season.push(String(saveDate));
+
+		// 	}
+		// 	return season;
+		// }
+			
+		}
+	</script>
+</body>
+
+</html>

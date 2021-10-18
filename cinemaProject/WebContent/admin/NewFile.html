@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<button onclick=a()>눌러보셈</button>
+
+	<script>
+	function a(){
+		let xhtp = new XMLHttpRequest();
+		xhtp.onload = function() {
+			console.log("여기");
+			let data = JSON.parse(xhtp.responseText);
+			console.log(data);
+		}
+		xhtp.open('get', "../MovieSearchServ");
+		 xhtp.send();
+		
+	}
+	</script>
+</body>
+</html>

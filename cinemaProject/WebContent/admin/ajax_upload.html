@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style>
+.row {
+	width: 550px;
+	border: 1px solid red;
+}
+
+.row>div {
+	width: 100px;
+	height: 100px;
+	border: 1px solid red;
+	float: left;
+}
+</style>
+
+
+</head>
+
+<body>
+	<form id='frm' method='post' enctype='multipart/form-data'
+		onsubmit='submitAction(event)'>
+		author: <input type='text' name='author'> <br> title: <input
+			type='text' name='title'> <br> file: <input type='file'
+			name='file'><br> <input type='submit' value='파일업로드'>
+	</form>
+
+	<div id='show'></div>
+	<!--  id,author,title,file ,image -->
+	<div class='row'>
+
+		</div>
+	</div>
+	<div class="row"></div>
+	<div class="row"></div>
+
+	<script>
+		//리스트 (이미지 포함)
+		$.ajax({
+			url:'../GetBoardListServelet',
+			tyoe:'get',
+			dataType:'json',
+			success:function(result){
+				//성공화면
+				console.log(result);
+				
+				for(let row of result){
+					$('#show').append(createDiv(row));
+				}
+			},
+			error:function(){
+				//에러화면
+
+			}
+
+		});
+		//데이터 한건을 가지고 div>div:id,..... 
+		function createDiv(row){
+			let divRow=$('<div />').addClass('row');
+			console.log(row);
+			$(divRow).append(
+				$('<div />').html(row.num),
+				$('<div />').html(row.author),
+				$('<div />').html(row.title),
+				$('<div />').html(row.fileName),
+				$('<div />').html('<img width="100px" src="../upload/'+row.fileName+'">')
+
+			);
+			return divRow;
+		}
+
+
+		function submitAction(ev) {
+			ev.preventDefault();
+			let frm = document.getElementById('frm');
+			let data = new FormData(frm);
+			console.log(data);
+			$.ajax({
+				url: '../AddFileServlet',
+				type: $('#frm').attr('method'),
+				data: data,
+				processData: false,
+				contentType: false,
+				dataType: 'json',
+				success: function (result) {
+					alert('성공');
+					console.log(result);
+					$('#show').append(createDiv(result));
+					//입력했던 값을 지우도록.
+					$('#frm>input').not('[type="submit"]').val('');
+
+				},
+				error: function () {
+					alert('실패');
+				}
+
+			});
+		}
+	</script>
+
+</body>
+
+</html>
