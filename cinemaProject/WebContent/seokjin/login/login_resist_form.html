@@ -59,9 +59,10 @@
 			z.style.left = "110px";
 		}
 
-		// function checkInfo() {
-			
-		// }
+		function setCookie(userId) {
+			document.cookie = userId;
+		}
+		
 		
 		function userLogin() {
 			let id = $('#loginId').val();
@@ -74,15 +75,17 @@
 				let data = JSON.parse(xhtp.responseText);
 				console.log(data);
 				if(data.retCode == 'admin'){
+					let curId = $('#loginId').val();
 					window.alert('관리자로 로그인하였습니다.');
-					return;
+					setCookie(curId);
+					// console.log(document.cookie);
+					window.location.href='hello.html?userId='+curId;
 				} else if(data.retCode == 'member') {
 					window.alert('회원으로 로그인하였습니다.');
-					return;
 				} else if(data.retCode == 'fail') {
+					$('#loginId').val('');
+					$('#loginPw').val('');
 					window.alert('아이디 또는 패스워드가 틀렸습니다.');
-					return;
-					
 				}
 			}
 			xhtp.open('post', '../../MemberServlet');
@@ -109,8 +112,11 @@
 				console.log(data);
 				if(data.retCode == 'success'){
 					window.alert('회원가입이 완료되었습니다.');
+					window.location.href='login_resist_form.html';
 					return;
 				}
+				$('#joinId').val('');
+				$('#joinPw').val('');
 				window.alert('이미 존재하는 아이디입니다.');
 			} 
 			xhtp.open('post', '../../MemberServlet');

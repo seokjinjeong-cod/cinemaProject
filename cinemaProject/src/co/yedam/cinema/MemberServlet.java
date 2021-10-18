@@ -24,7 +24,6 @@ public class MemberServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
@@ -52,7 +51,7 @@ public class MemberServlet extends HttpServlet {
 			
 			if(dao.join(member) != null) {
 				// {"retCode":"fail"} {"retCode":"success"}
-				out.println(gson.toJson(member));
+//				out.println(gson.toJson(member));
 				System.out.println("success");
 				out.println("{\"retCode\":\"success\"}");
 				System.out.println("success");
@@ -66,13 +65,13 @@ public class MemberServlet extends HttpServlet {
 			
 			if(dao.login(pw, id) == 2) {
 				out.println("{\"retCode\":\"admin\"}");
-				return;
+				
 			} else if(dao.login(pw, id) == 1) {
 				out.println("{\"retCode\":\"member\"}");
-				return;
+				
 			} else if(dao.login(pw, id) == 0) {
 				out.println("{\"retCode\":\"fail\"}");
-				return;
+				
 			}
 			
 			
