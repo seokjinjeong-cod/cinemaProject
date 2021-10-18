@@ -21,11 +21,11 @@
 				<button type="button" class="togglebtn" onclick="login()">LOGIN</button>
 				<button type="button" class="togglebtn" onclick="register()">REGISTER</button>
 			</div>
-			<div class="social-icons">
+			<!-- <div class="social-icons">
 				<img src="img/fb.png" alt="facebook">
 				<img src="img/tw.png" alt="twitter">
 				<img src="img/gl.png" alt="google">
-			</div>
+			</div> -->
 			<form id="login" action="" class="input-group">
 				<input type="text" id="loginId" class="input-field" placeholder="Enter Id" required>
 				<input type="password" id="loginPw" class="input-field" placeholder="Enter Password" required>
@@ -34,15 +34,46 @@
 			<form id="register" action="" class="input-group">
 				<input type="text" id="joinId" class="input-field" placeholder="Id" required>
 				<input type="password" id="joinPw" class="input-field" placeholder="Password" required>
+				<input type="password" id="pwCheck" class="input-field" placeholder="Password Check" required>
 				<input type="text" id="joinName" class="input-field" placeholder="Name" required>
 				<input type='radio' name='gender' value='male' checked>남성
-				<input type='radio' name='gender' value='female'>여성
-				<input type="text" id="joinBirth" class="input-field" placeholder="Birth ex)YYMMDD" required>
+				<input type='radio' name='gender' value='female'>여성<br>
+				생년월일
+				<select name="yy" id="year"></select>년
+				<select name="mm" id="month"></select>월
+				<select name="dd" id="day"></select>일
+				<!-- <input type="text" id="joinBirth" class="input-field" placeholder="Birth ex)YYMMDD" required> -->
 				<button type="button" class="submit" onclick="join()">REGISTER</button>
 			</form>
 		</div>
 	</div>
 	<script>
+		$(document).ready(function(){            
+			var now = new Date();
+			var year = now.getFullYear();
+			var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
+			var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
+			//년도              
+			for(var i = 1900 ; i <= year ; i++) {
+				$('#year').append('<option value="' + i + '">' + i + '년</option>');    
+			}
+
+			// 월별            
+			for(var i=1; i <= 12; i++) {
+				var mm = i > 9 ? i : "0"+i ;            
+				$('#month').append('<option value="' + mm + '">' + mm + '월</option>');    
+			}
+			
+			// 일별
+			for(var i=1; i <= 31; i++) {
+				var dd = i > 9 ? i : "0"+i ;            
+				$('#day').append('<option value="' + dd + '">' + dd+ '일</option>');    
+			}
+			$("#year  > option[value="+year+"]").attr("selected", "true");        
+			$("#month  > option[value="+mon+"]").attr("selected", "true");    
+			$("#day  > option[value="+day+"]").attr("selected", "true");       
+		})
+
 		var x = document.getElementById("login");
 		var y = document.getElementById("register");
 		var z = document.getElementById("btn");
@@ -64,6 +95,16 @@
 			document.cookie = userId;
 		}
 		
+		function joinn() {
+			let y = $('#year').val().substring(2);
+			let m = $('#month').val();
+			let d = $('#day').val();
+			console.log(y+m+d);
+			let result = y+m+d;
+			console.log(result);
+			
+		}
+
 		// 로그인
 		function userLogin() {
 			let id = $('#loginId').val();
@@ -75,14 +116,18 @@
 			xhtp.onload = function() {
 				let data = JSON.parse(xhtp.responseText);
 				console.log(data);
+				let curId = $('#loginId').val();
 				if(data.retCode == 'admin'){
-					let curId = $('#loginId').val();
+					$('#loginId').val('');
+					$('#loginPw').val('');
 					window.alert('관리자로 로그인하였습니다.');
 					setCookie(curId);
 					// console.log(document.cookie);
-					window.location.href='hello.html?userId='+curId;
+					window.location.href='../../admin/test.html?userId='+curId;
 				} else if(data.retCode == 'member') {
-					window.alert('회원으로 로그인하였습니다.');
+					$('#loginId').val('');
+					$('#loginPw').val('');
+					window.location.href='../../admin/MovieTicketing.html?userId='+curId;
 				} else if(data.retCode == 'fail') {
 					$('#loginId').val('');
 					$('#loginPw').val('');
@@ -98,18 +143,45 @@
 		function join() {
 			let id = $('#joinId').val();
 			let pw = $('#joinPw').val();
+			let pwCheck = $('#pwCheck').val();
 			let name = $('#joinName').val();
 			let gender = $('input[name=gender]:checked').val();
-			let birth = $('#joinBirth').val();
+
+
+			//생년월일
+			let y = $('#year').val().substring(2);
+			let m = $('#month').val();
+			let d = $('#day').val();
+			// console.log(y+m+d);
+			let birth = y+m+d;
+
 			console.log(id);
 			console.log(pw);
 			console.log(name);
 			console.log(gender);
 			console.log(birth);
-			// checkInfo();
+
+			// 패스워드 검사
+			let passwordRegExp = /^[a-zA-z0-9]{4,12}$/;
+			if(!passwordRegExp.test(pw)) {
+				$('#joinPw').val('');
+				$('#pwCheck').val('');
+				window.alert('비밀번호는 영문 대소문자와 숫자 4~12자리로 입력해야합니다.');
+				return;
+			}
+
+
+			if(pw != pwCheck) {
+				$('#joinPw').val('');
+				$('#pwCheck').val('');
+				window.alert('비밀번호를 확인하세요.');
+				return;
+			}
+
 
 			let xhtp = new XMLHttpRequest();
 			xhtp.onload = function() {
+				console.log('ghey');
 				let data = JSON.parse(xhtp.responseText);
 				console.log(data);
 				if(data.retCode == 'success'){
@@ -119,6 +191,8 @@
 				}
 				$('#joinId').val('');
 				$('#joinPw').val('');
+				$('#pwCheck').val('');
+				$('#joinName').val('');
 				window.alert('이미 존재하는 아이디입니다.');
 			} 
 			xhtp.open('post', '../../MemberServlet');
