@@ -2,6 +2,8 @@ package co.yedam.cinema;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -73,8 +75,12 @@ public class MemberServlet extends HttpServlet {
 				out.println("{\"retCode\":\"fail\"}");
 				
 			}
+		} else if(cmd.equals("ticket")) {
+			String userId = request.getParameter("userId");
+			List<TicketingVO> list = new ArrayList<>();
+			list = dao.ticketCheck(userId);
 			
-			
+			out.println(gson.toJson(list));
 		}
 		
 	}

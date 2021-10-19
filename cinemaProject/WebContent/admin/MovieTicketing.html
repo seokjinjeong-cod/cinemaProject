@@ -46,16 +46,82 @@
 			float: left;
 			text-align: center;
 		}
+
+		#button {
+			float: right;
+		}
+		aside {
+			float: right;
+		}
 	</style>
 </head>
 
 <body>
+	<button id="button" class="menu" onclick="logOut()">로그아웃</button>
+	<button id="button" class="menu" onclick="ticketCheck()">예약정보</button>
+	<aside>
+		<div id="ticketCheck">
+			<ul id="divToggle"></ul>
+		</div>
+	</aside>
 	<div id="showmovie">
 		<h1>현재상영작</h1>
-
+	
 	</div>
 
 	<script>
+		let link = document.location.href;
+        console.log(link.split('=')[1]);
+        let userId = link.split('=')[1];
+        console.log(userId);
+
+		function logOut() {
+			window.location.href='../seokjin/login/login_resist_form.html';
+		}
+
+		// $(function() {
+		// 	$('#button').click(function() {
+		// 		$('#ticketCheck').empty();
+
+		// 		let p = ('<p />');
+		// 		p.html()
+		// 	});
+		// });
+
+		function ticketCheck() {
+			console.log(userId);
+			
+			let xhtp = new XMLHttpRequest();
+			xhtp.onload = function() {
+				let data = JSON.parse(xhtp.responseText);
+				console.log(data);
+				// console.log(data.length);
+				if(data.length == 0) {
+					window.alert("예약정보가 없습니다.");
+					return;
+				}
+
+				$('#divToggle').empty();
+				for(let ticket of data) {
+					console.log(ticket);
+					let ticketInfo = $('<li/>').html(ticket.title + ',' + 
+												  ticket.ticketDate + ',' + 
+												  ticket.location + ',' + 
+												  ticket.time + ',' + 
+												  ticket.seatNum);
+					$('ul').append(ticketInfo);
+				}
+				$('#divToggle').toggle();
+
+
+			}
+			xhtp.open('post', '../MemberServlet');
+			xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhtp.send('userId=' + userId + '&cmd=ticket')
+		};
+		
+
+
 		$.ajax({
 			url: '../GetScreenInfo',
 			tyoe: 'get',

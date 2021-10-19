@@ -1,6 +1,8 @@
 package co.yedam.cinema;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import co.yedam.common.DAO;
 
@@ -64,5 +66,35 @@ public class MemberDAO extends DAO {
 			disconnect();
 		}
 		return loginResult;
+	}
+	
+	public List<TicketingVO> ticketCheck(String id) {
+		connect();
+		String sql = "select * from ticketing where id = ?";
+		List<TicketingVO> list = new ArrayList<>();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				TicketingVO ticket = new TicketingVO();
+				
+				ticket.setId(rs.getString("id"));
+				ticket.setTitle(rs.getString("title"));
+				ticket.setTicketDate(rs.getString("ticketdate"));
+				ticket.setLocation(rs.getString("location"));
+				ticket.setTime(rs.getString("time"));
+				ticket.setSeatNum(rs.getString("seatnum"));
+				
+				list.add(ticket);
+			}
+			System.out.println(list);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return list;
 	}
 }

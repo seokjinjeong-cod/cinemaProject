@@ -82,12 +82,19 @@
 			x.style.left = "50px";
 			y.style.left = "450px";
 			z.style.left = "0";
+			$('#joinId').val('');
+			$('#joinPw').val('');
+			$('#pwCheck').val('');
+			$('#joinName').val('');
+			$('input[name=gender]:checked').val('');
 		}
 
 		function register() {
 			x.style.left = "-400px";
 			y.style.left = "50px";
 			z.style.left = "110px";
+			$('#loginId').val('');
+			$('#loginPw').val('');
 		}
 
 		// 쿠키(보류)
@@ -161,20 +168,36 @@
 			console.log(gender);
 			console.log(birth);
 
-			// 패스워드 검사
-			let passwordRegExp = /^[a-zA-z0-9]{4,12}$/;
-			if(!passwordRegExp.test(pw)) {
-				$('#joinPw').val('');
-				$('#pwCheck').val('');
-				window.alert('비밀번호는 영문 대소문자와 숫자 4~12자리로 입력해야합니다.');
+			//아이디 검사
+			let idCheck = /^[a-z][a-z\d]{4,11}$/;
+			if(!idCheck.test(id)) {
+				$('#joinId').val('');
+				window.alert('아이디는 4~12자의 영문 소문자와 숫자로만 입력해주세요.');
 				return;
 			}
 
+			// 패스워드 검사
+			let passwordCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+			if(!passwordCheck.test(pw)) {
+				$('#joinPw').val('');
+				$('#pwCheck').val('');
+				window.alert('비밀번호는 숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+				return;
+			}
 
+			// 비밀번호 확인 검사
 			if(pw != pwCheck) {
 				$('#joinPw').val('');
 				$('#pwCheck').val('');
 				window.alert('비밀번호를 확인하세요.');
+				return;
+			}
+
+			// 이름 검사
+			let nameCheck = /^[가-힣]+$/;
+			if(!nameCheck.test(name)) {
+				$('#joinName').val('');
+				window.alert('잘못된 형식의 이름입니다.');
 				return;
 			}
 
