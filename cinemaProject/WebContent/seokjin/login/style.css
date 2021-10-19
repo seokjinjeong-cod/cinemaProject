@@ -4,6 +4,14 @@
 	font-family: 'Jua', sans-serif;
 }
 
+/* .wrap {
+	height: 100%;
+	width: 100%;
+	background-image: url(img/film-596009.jpg);
+	background-position: center;
+	background-size: cover;
+	position: absolute;
+} */
 .wrap {
 	height: 100%;
 	width: 100%;
@@ -15,9 +23,26 @@
 
 .title {
 	text-align: center;
-	font-size: 30px;
-	margin-top: 2%;
+	font-size: 3rem;
+	margin-top: 10%;
+	font-weight:  100;
+	  letter-spacing: 2px;
+	  color: #f35626;
+	  background-image: -webkit-linear-gradient(92deg, #f35626, #feab3a);
+	  -webkit-background-clip: text;
+	  -webkit-text-fill-color: transparent;
+	  -webkit-animation: hue 10s infinite linear;
+	}
+	
+	@-webkit-keyframes hue {
+	  from {
+	    -webkit-filter: hue-rotate(0deg);
+	  }
+	  to {
+	    -webkit-filter: hue-rotate(-360deg);
+  }
 }
+
 
 .form-wrap {
 	width: 380px;
