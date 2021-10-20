@@ -1,6 +1,7 @@
 package co.yedam.admin;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,11 +32,10 @@ public class MovieUploadServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		String cmd=request.getParameter("cmd");
-		System.out.println(cmd);
+		PrintWriter out = response.getWriter();
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
+		System.out.println("요기3");
 		int seatCnt = 80; //좌석수
 		ServletContext context = getServletContext();
 		String saveDir = context.getRealPath("upload");
@@ -78,10 +78,11 @@ public class MovieUploadServlet extends HttpServlet {
 
 				FileDAO dao = new FileDAO();
 				FileVO vo = dao.uploadFile(title, a,  screenTime,location, img,seatCnt);
-				Gson gson = new GsonBuilder().create();
-				response.getWriter().println(gson.toJson(vo));
+//				Gson gson = new GsonBuilder().create();
+
 			}
 		}
+		out.println(1);
 		System.out.println(saveDir);
 	}
 

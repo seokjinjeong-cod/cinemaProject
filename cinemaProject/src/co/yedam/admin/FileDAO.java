@@ -32,6 +32,51 @@ public class FileDAO extends DAO {
 		}
 		return list;
 	}
+	public List<FileVO> loadSeatInfo(String title,String ticketdate,String location,String time) {
+		connect();
+		List<FileVO> list=new ArrayList<>();
+		String sql ="select * from ticketing where title=? and ticketdate=? and location=? and time=?";
+		System.out.println(title+","+ticketdate+","+location+","+time);
+		try {
+			psmt=conn.prepareStatement(sql);
+			psmt.setString(1, title);
+			psmt.setString(2, ticketdate);
+			psmt.setString(3, location);
+			psmt.setString(4, time);
+			rs=psmt.executeQuery();
+			while(rs.next()) {
+				FileVO vo=new FileVO();
+				vo.setSeatnum(rs.getString("seatnum"));
+				list.add(vo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+		
+	}
+	
+	
+	public int TicketingUp(String id , String title , String ticketdate ,String location , String time,String seatnum) {
+		connect();
+		String sql = "insert into ticketing values(TICKETNUM.nextval,?,?,?,?,?,?)";
+		
+		try {
+			psmt=conn.prepareStatement(sql);
+			psmt.setString(1, id);
+			psmt.setString(2, title);
+			psmt.setString(3, ticketdate);
+			psmt.setString(4, location);
+			psmt.setString(5, time);
+			psmt.setString(6, seatnum);
+			rs=psmt.executeQuery();
+			return 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+		
+	}
 	//일반사용자가 볼 리스트
 	public List<FileVO> GetScreenUser(){
 		connect();
@@ -50,7 +95,6 @@ public class FileDAO extends DAO {
 				vo.setSeatcnt(rs.getInt("seatcnt"));
 				vo.setImg(rs.getString("img"));
 				list.add(vo);
-				System.out.println(vo);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -58,7 +102,6 @@ public class FileDAO extends DAO {
 			disconnect();
 		}
 		return list;
-		
 		
 	}
 	public List<FileVO> ScreenList(String title , String date , String location){
@@ -126,18 +169,20 @@ public class FileDAO extends DAO {
 			psmt.setInt(6,seatCnt );
 			int r =psmt.executeUpdate();
 			System.out.println(r+"건 입력.");
+			return seatCnt;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return 0;
 		}finally {
 			disconnect();
 		}
-		return seatCnt;
 	}
 	
 	//파일 업로드 처리.
 	//서블릿에서 파일 업로드 , db저장.
 	public FileVO uploadFile(String title,String startdate,String screentime,String  location,String img,int seatCnt) {
 		connect();
+		System.out.println("요기1");
 		String sql="insert into movieupload values(?,?,?,?,?,?)";
 		try {
 			System.out.println(title+','+startdate+','+location+','+screentime+','+img);
@@ -157,7 +202,10 @@ public class FileDAO extends DAO {
 			vo.setLocation(location);
 			vo.setImg(img);
 			vo.setSeatcnt(seatCnt);
+			System.out.println("요기2");
+			System.out.println(vo);
 			return vo;
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

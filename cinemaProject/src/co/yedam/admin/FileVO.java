@@ -6,6 +6,14 @@ public class FileVO {
 	private String location;
 	private String screentime;
 	private String img;
+	private String seatnum;
+	
+	public String getSeatnum() {
+		return seatnum;
+	}
+	public void setSeatnum(String seatnum) {
+		this.seatnum = seatnum;
+	}
 	private int seatcnt;
 	
 	public int getSeatcnt() {
