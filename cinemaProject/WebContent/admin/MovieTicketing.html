@@ -87,7 +87,8 @@
 		// 		p.html()
 		// 	});
 		// });
-
+		
+		//예약정보
 		function ticketCheck() {
 			console.log(userId);
 			
@@ -104,11 +105,11 @@
 				$('#divToggle').empty();
 				for(let ticket of data) {
 					console.log(ticket);
-					let ticketInfo = $('<li/>').html(ticket.title + ',' + 
+					let ticketInfo = $('<li/>').addClass(""+ticket.num+"").html(ticket.title + ',' + 
 												  ticket.ticketDate + ',' + 
 												  ticket.location + ',' + 
 												  ticket.time + ',' + 
-												  ticket.seatNum);
+												  ticket.seatNum + '<button onclick="cancelTicket('+ ticket.num +')">예약취소</button>');
 					$('ul').append(ticketInfo);
 				}
 				$('#divToggle').toggle();
@@ -117,8 +118,31 @@
 			}
 			xhtp.open('post', '../MemberServlet');
 			xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhtp.send('userId=' + userId + '&cmd=ticket')
+			xhtp.send('userId=' + userId + '&cmd=ticket');
 		};
+
+		//예약취소
+		function cancelTicket(e) {
+			if(!window.confirm('선택하신 예매를 취소하시겠습니까?')) {
+				return;
+			}
+			let ticketNum = e;
+			console.log(e);
+			let xhtp = new XMLHttpRequest();
+			xhtp.onload = function() {
+				let data = JSON.parse(xhtp.responseText);
+				console.log(data);
+				
+				if(data.retCode == "success") {
+					window.alert("예매가 취소되었습니다.");
+					$("."+e+"").remove();
+				}
+				
+			}
+			xhtp.open('post', '../MemberServlet');
+			xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhtp.send('ticketNum=' + ticketNum + '&cmd=cancelTicket');
+		}
 		
 
 

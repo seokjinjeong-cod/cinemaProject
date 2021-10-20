@@ -8,6 +8,8 @@ public class TicketingVO {
 	private String location;
 	private String time;
 	private String seatNum;
+	private int num;
+	
 	public String getId() {
 		return Id;
 	}
@@ -44,11 +46,19 @@ public class TicketingVO {
 	public void setSeatNum(String seatNum) {
 		this.seatNum = seatNum;
 	}
+	
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	@Override
 	public String toString() {
 		return "TicketingVO [Id=" + Id + ", title=" + title + ", ticketDate=" + ticketDate + ", location=" + location
-				+ ", time=" + time + ", seatNum=" + seatNum + "]";
+				+ ", time=" + time + ", seatNum=" + seatNum + ", num=" + num + "]";
 	}
+	
 	
 	
 }

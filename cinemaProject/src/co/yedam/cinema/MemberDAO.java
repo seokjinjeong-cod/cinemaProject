@@ -85,6 +85,7 @@ public class MemberDAO extends DAO {
 				ticket.setLocation(rs.getString("location"));
 				ticket.setTime(rs.getString("time"));
 				ticket.setSeatNum(rs.getString("seatnum"));
+				ticket.setNum(rs.getInt("num"));
 				
 				list.add(ticket);
 			}
@@ -96,5 +97,22 @@ public class MemberDAO extends DAO {
 			disconnect();
 		}
 		return list;
+	}
+	
+	public boolean cancelTicket(int ticketNum) {
+		connect();
+		String sql = "delete from ticketing where num = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, ticketNum);
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 예약취소");
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+		return false;
 	}
 }

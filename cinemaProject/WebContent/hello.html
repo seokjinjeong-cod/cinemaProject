@@ -8,36 +8,16 @@
     <script src="/jquery/jquery-3.6.0.min.js"></script>
     <title>Document</title>
     <style>
-        .show {
-            display: block
-        }
-		
-		/*숨기기*/
-        .hide {
-            display: none
-        }
     </style>
 </head>
 
 <body>
-    <button id="button">토글버튼</button>
-    <ul id="divToggle"></ul>
+    <div id="ticketCheck">
+        <ul id="divToggle"></ul>
+    </div>
     <script>
-        let et = [1,2];
-
-        // $(function () {
-            $("#button").click(function () {
-                $('#divToggle').empty();
-                for(let i of et) {
-                    console.log(i);
-                    let li = $('<li />');
-                    li.html(i);
-                    $('ul').append(li);
-                }
-
-                $("#divToggle").toggle();
-            });
-        // });
+        let ticketInfo = $('<li / >').addClass('1').html('abc');
+            $('ul').append(ticketInfo);
     </script>
 </body>
 

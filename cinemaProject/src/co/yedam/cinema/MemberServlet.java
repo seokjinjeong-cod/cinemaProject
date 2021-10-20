@@ -81,6 +81,14 @@ public class MemberServlet extends HttpServlet {
 			list = dao.ticketCheck(userId);
 			
 			out.println(gson.toJson(list));
+		} else if(cmd.equals("cancelTicket")) {
+			String ticketNum = request.getParameter("ticketNum");
+			
+			if(dao.cancelTicket(Integer.parseInt(ticketNum)) == true) {
+				out.println("{\"retCode\":\"success\"}");
+			} else {
+				out.println("{\"retCode\":\"fail\"}");
+			}
 		}
 		
 	}
