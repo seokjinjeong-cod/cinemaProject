@@ -12,10 +12,10 @@
 <style>
 body {
 	background-color: black;
-	width: 1200px;
+	/* width: 1200px;
 	padding: 1%;
 	text-align: center;
-	/* transform: translate(-50%,-50%); */
+	transform: translate(-50%,-50%); */
 	border: 1px solid white;
 }
 
@@ -79,8 +79,9 @@ h1 {
 }
 
 button {
-	text-align: center;
-	margin: 5px;
+	/* text-align: center; */
+	float: right;
+	font-size: 13px;
 }
 
 section {
@@ -93,24 +94,56 @@ section {
 	text-align: center;
 }
 
-#button {
-	float: right;
-}
 
 aside {
 	float: right;
 }
+
+ul {
+	text-align: right;
+}
+
+li {
+	color: white;
+	list-style: none;
+	/* text-align: right; */
+	/* position: relative; */
+	/* z-index: 10; */
+}
+
+.menu button {
+	cursor: pointer;
+	position: relative;
+	z-index: 3;
+}
+
+.menu .hide {
+	display: none;
+	position: absolute;
+	/* display: inline-block; */
+	z-index: 2;
+	background-color: rebeccapurple;
+}
+
+#abc {
+	float: right;
+}
+
 </style>
 </head>
 
 <body>
-	<button id="button" class="menu" onclick="logOut()">로그아웃</button>
-	<button id="button" class="menu" onclick="ticketCheck()">예약정보</button>
-	<aside>
-		<div id="ticketCheck">
-			<ul id="divToggle"></ul>
-		</div>
-	</aside>
+	<div id="abc">
+	<div id="ticketCheck" class="menu">
+		<button id="button" onclick="logOut()">로그아웃</button>
+		<button id="button" class="menu" onclick="ticketCheck()">예약정보</button>
+		<ul id="divToggle" class="hide"></ul>
+	</div>
+	</div>
+
+	<!-- <div id="ticketCheck">
+		<ul id="divToggle"></ul>
+	</div> -->
 	<div id="showmovie">
 		<h1>현재상영작</h1>
 
@@ -127,9 +160,11 @@ console.log(userId);
 	let seatRed = [];
 	let id = userId;
 
+	//로그아웃
 	function logOut() {
 		window.location.href='../seokjin/login/login_resist_form.html';
 	}
+
 	//예약정보
 	function ticketCheck() {
 		console.log(userId);
@@ -147,14 +182,14 @@ console.log(userId);
 			$('#divToggle').empty();
 			for(let ticket of data) {
 				console.log(ticket);
-				let ticketInfo = $('<li/>').addClass(""+ticket.num+"").html(ticket.title + ',' + 
+				let ticketInfo = $('<li/>').addClass(""+ticket.num+"").html('<br>'+ticket.title + ',' + 
 											  ticket.ticketDate + ',' + 
 											  ticket.location + ',' + 
 											  ticket.time + ',' + 
 											  ticket.seatNum + '<button onclick="cancelTicket('+ ticket.num +')">예약취소</button>');
 				$('ul').append(ticketInfo);
 			}
-			$('#divToggle').toggle();
+			// $('#divToggle').toggle();
 
 
 		}
@@ -162,6 +197,21 @@ console.log(userId);
 		xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		xhtp.send('userId=' + userId + '&cmd=ticket');
 	};
+
+	$(document).ready(function () {
+            // menu 클래스 바로 하위에 있는 button 태그를 클릭했을때
+            $(".menu>button").click(function () {
+                var submenu = $(this).next("ul");
+
+                // submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
+                if (submenu.is(":visible")) {
+                    submenu.slideUp();
+                } else {
+                    submenu.slideDown();
+            	}
+       		});
+    });
+
 	//예약취소
 	function cancelTicket(e) {
 		if(!window.confirm('선택하신 예매를 취소하시겠습니까?')) {

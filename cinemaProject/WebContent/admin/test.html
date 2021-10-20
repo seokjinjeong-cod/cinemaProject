@@ -23,6 +23,46 @@
 		background-size: cover;
 		position: absolute;
 	}
+	
+	
+	#button {
+		width: 55px;
+		height: 30px;
+		float: right;
+	}
+
+	.btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 250px;
+		background-color: blue;
+		border: none;
+		color: white;
+		padding: 15px 30px;
+		text-align: center;
+		text-decoration: none;
+		display: inline-block;
+		font-size: 25px;
+		margin: 4px 2px;
+		cursor: pointer;
+		margin-left: 40%;
+		overflow: hidden;
+		border-radius: 10px;
+	}
+
+	#frm {
+		margin-left: 40%;
+		font-weight: bold;
+	}
+
+	#find {
+		margin-left: 35%;
+	}
+
+	#findScreen {
+		background-color: yellow;
+	}
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -34,8 +74,9 @@
 </head>
 
 <body>
-	<button id='makeBtn' onclick=uploadFnc(event);>상영정보 등록</button>
-	<button id='searchBtn'onclick=searchScreen(event);>상영정보 조회</button>
+	<button id="button" class="menu" onclick="logOut()">로그아웃</button>
+	<button id='makeBtn' class="btn" onclick=uploadFnc(event);>상영정보 등록</button>
+	<button id='searchBtn' class="btn" onclick=searchScreen(event);>상영정보 조회</button>
 	<form id='frm' method='post' enctype='multipart/form-data'
 		onsubmit='movieInfo(event)' style="display: none";>
 		상영시작일 : <input type="date" id='startdate' name='startdate'><br>
@@ -60,6 +101,11 @@
 
 
 	<script>
+	
+	//로그아웃
+	function logOut() {
+		window.location.href='../seokjin/login/login_resist_form.html';
+	}
 
     function searchScreen() 
     
