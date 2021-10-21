@@ -5,566 +5,567 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+   href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 <style>
 body {
-	background-color: black;
-	/* width: 1200px;
-	padding: 1%;
-	text-align: center;
-	transform: translate(-50%,-50%); */
-	border: 1px solid white;
+   background-color: black;
+   width: 1200px;
+   padding: 1%;
+   text-align: center;
+   /* transform: translate(-50%,-50%); */
 }
 
-#sideshow {
-	border: 1px solid rgb(255, 255, 255);
-	color: white;
-	width: 25%;
-	float: right;
-	height: 100%;
-	margin: 35% 0px 0px 0px;
-	/*position: fixed;*/
+#sidebar {
+   position: absolute;
+   top: 180px;
+   right: 1%;
+   margin-right: -670px;
+   border: 1px solid rgb(255, 255, 255);
+   color: white;
+   width: 15%;
+   float: right;
+   margin: 0% 0px 0px 0px;
+   border-radius: 10%;
+   padding: 5px;
+   /*position: fixed;*/
 }
 
 #sideshow>div {
-	color: white;
-	/* float:left; */
+   color: white;
+   /* float:left; */
 }
 
 /* #showmovie{
-			float : left;
-		} */
+         float : left;
+      } */
 .time {
-	width: "100px";
-	margin: "5% 0px 5% 30%";
-	background-color: #2e97ec;
-	border-radius: 1%;
+   width: "100px";
+   margin: "5% 0px 5% 30%";
+   background-color: #2e97ec;
+   border-radius: 1%;
+   position: relative;
+   z-index: 10;
 }
 
 input {
-	margin: 3px;
+   margin: 3px;
 }
 
 select {
-	width: 25%;
-	padding: 5px;
-	border: 1px solid #999;
-	font-family: 'Nanumgothic';
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	margin: 10px;
-	cursor: pointer;
+   width: 20%;
+   padding: 5px;
+   border: 1px solid #999;
+   font-family: 'Nanumgothic';
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   margin: 10px;
+   cursor: pointer;
 }
 
 table {
-	background-color: rgb(166, 246, 206);
+   background-color: rgb(166, 246, 206);
 }
 
 h1 {
-	text-align: center;
-	color: white;
+   text-align: center;
+   color: white;
 }
 
 #showposter {
-	width: 100%;
+   width: 100%;
 }
 
 #showtitle {
-	text-align: center;
-	float: block;
+   text-align: center;
+   float: block;
 }
 
 button {
-	/* text-align: center; */
-	float: right;
-	font-size: 13px;
+   text-align: center;
+   margin: 5px;
 }
 
 section {
-	border-radius: 10%;
-	background-color: rgb(255, 139, 245);
-	border: 1px solid gray;
-	width: 30%;
-	height: 30%;
-	float: left;
-	text-align: center;
+   border-radius: 10%;
+   background-color: rgb(255, 139, 245);
+   border: 1px solid gray;
+   width: 30%;
+   height: 30%;
+   float: left;
+   text-align: center;
 }
 
+#button {
+   float: right;
+}
 
 aside {
-	float: right;
-}
-
-ul {
-	text-align: right;
+   float: right;
 }
 
 li {
-	color: white;
-	list-style: none;
-	/* text-align: right; */
-	/* position: relative; */
-	/* z-index: 10; */
+   color: white;
 }
-
-.menu button {
-	cursor: pointer;
-	position: relative;
-	z-index: 3;
-}
-
-.menu .hide {
-	display: none;
-	position: absolute;
-	/* display: inline-block; */
-	z-index: 2;
-	background-color: rebeccapurple;
-}
-
-#abc {
-	float: right;
-}
-
 </style>
 </head>
 
 <body>
-	<div id="abc">
-	<div id="ticketCheck" class="menu">
-		<button id="button" onclick="logOut()">로그아웃</button>
-		<button id="button" class="menu" onclick="ticketCheck()">예약정보</button>
-		<ul id="divToggle" class="hide"></ul>
-	</div>
-	</div>
+   <button id="button" class="btn btn-primary" onclick="logOut()">로그아웃</button>
+   <button id="button" class="btn btn-primary" onclick="ticketCheck()">예약정보</button>
+   <aside>
+      <div id="ticketCheck">
+         <ul id="divToggle"></ul>
+      </div>
+   </aside>
+   <div id="showmovie">
+      <h1>현재상영작</h1>
 
-	<!-- <div id="ticketCheck">
-		<ul id="divToggle"></ul>
-	</div> -->
-	<div id="showmovie">
-		<h1>현재상영작</h1>
+   </div>
+   <div id="sidebar">
+      <h3>선택좌석</h3>
+      <div id="sideshow"></div>
 
-	</div>
-	<div id="sideshow">
-		<h3>선택좌석</h3>
-	</div>
+   </div>
 </body>
 <script>
 let link = document.location.href;
 console.log(link.split('=')[1]);
 let userId = link.split('=')[1];
 console.log(userId);
-	let seatRed = [];
-	let id = userId;
+   let seatRed = [];
+   let id = userId;
 
-	//로그아웃
-	function logOut() {
-		window.location.href='../seokjin/login/login_resist_form.html';
-	}
+   $(window).scroll(function(){
+      var scrollTop = $(document).scrollTop();
+      if (scrollTop < 180) {
+       scrollTop = 180;
+      }
+      $("#sidebar").stop();
+      $("#sidebar").animate( { "top" : scrollTop });
+      });
+   
+   function logOut() {
+      window.location.href='../seokjin/login/login_resist_form.html';
+   }
+   //예약정보
+   function ticketCheck() {
+      console.log(userId);
+      
+      let xhtp = new XMLHttpRequest();
+      xhtp.onload = function() {
+         let data = JSON.parse(xhtp.responseText);
+         console.log(data);
+         // console.log(data.length);
+         if(data.length == 0) {
+            window.alert("예약정보가 없습니다.");
+            return;
+         }
 
-	//예약정보
-	function ticketCheck() {
-		console.log(userId);
-		
-		let xhtp = new XMLHttpRequest();
-		xhtp.onload = function() {
-			let data = JSON.parse(xhtp.responseText);
-			console.log(data);
-			// console.log(data.length);
-			if(data.length == 0) {
-				window.alert("예약정보가 없습니다.");
-				return;
-			}
-
-			$('#divToggle').empty();
-			for(let ticket of data) {
-				console.log(ticket);
-				let ticketInfo = $('<li/>').addClass(""+ticket.num+"").html('<br>'+ticket.title + ',' + 
-											  ticket.ticketDate + ',' + 
-											  ticket.location + ',' + 
-											  ticket.time + ',' + 
-											  ticket.seatNum + '<button onclick="cancelTicket('+ ticket.num +')">예약취소</button>');
-				$('ul').append(ticketInfo);
-			}
-			// $('#divToggle').toggle();
-
-
-		}
-		xhtp.open('post', '../MemberServlet');
-		xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhtp.send('userId=' + userId + '&cmd=ticket');
-	};
-
-	$(document).ready(function () {
-            // menu 클래스 바로 하위에 있는 button 태그를 클릭했을때
-            $(".menu>button").click(function () {
-                var submenu = $(this).next("ul");
-
-                // submenu 가 화면상에 보일때는 위로 보드랍게 접고 아니면 아래로 보드랍게 펼치기
-                if (submenu.is(":visible")) {
-                    submenu.slideUp();
-                } else {
-                    submenu.slideDown();
-            	}
-       		});
-    });
-
-	//예약취소
-	function cancelTicket(e) {
-		if(!window.confirm('선택하신 예매를 취소하시겠습니까?')) {
-			return;
-		}
-		let ticketNum = e;
-		console.log(e);
-		let xhtp = new XMLHttpRequest();
-		xhtp.onload = function() {
-			let data = JSON.parse(xhtp.responseText);
-			console.log(data);
-			
-			if(data.retCode == "success") {
-				window.alert("예매가 취소되었습니다.");
-				$("."+e+"").remove();
-			}
-			
-		}
-		xhtp.open('post', '../MemberServlet');
-		xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhtp.send('ticketNum=' + ticketNum + '&cmd=cancelTicket');
-	}
-	
-	
-	$.ajax({
-		url: '../GetScreenInfo',
-		tyoe: 'get',
-		dataType: 'json',
-		success: function (result) {
-			//성공화면
-			console.log(result);
-			userShowMovie(result)
-		},
-		error: function () {
-			//에러화면
-		}
-	});
-	//초기화면
-	function userShowMovie(result) {
-		let title = [];
-		let location = [];
-		for (let field in result) {
-			title.push(result[field].title);
-			location.push(result[field].location);
-		}
-		let img;
-		let uniqueTitle = uniqueFnc(title);
-		let uniqueLocation = uniqueFnc(location);
-		let select
-		let i = 0;
-		for (let field in result) {
-			if (uniqueTitle[i] == result[field].title) {
-				img = result[field].img;
-				let section = document.createElement("section")
-				section.id = "section" + i + "";
-				let div = document.createElement("h3");
-				let outerdiv = document.getElementById('showmovie');
-				div.id = 'showtitle';
-				div.innerHTML = uniqueTitle[i];
-				section.appendChild(div);
-				div = document.createElement('div');
-				div.id = 'showposter';
-				div.style.float = 'left';
-				div.innerHTML = '<img width="200px" height="300px" ; src="../upload/' + img + '">';
-				div.setAttribute('onclick', 'movieSelect(event)');
-				section.appendChild(div);
-				let dateInput = document.createElement('input');
-				// dateInput.id='watchingDate';
-				dateInput.type = 'text';
-				section.appendChild(dateInput);
-				dateInput.setAttribute('type', 'date');
-				dateInput.id = 'showDate';
-				select = document.createElement('select');
+         $('#divToggle').empty();
+         for(let ticket of data) {
+            console.log(ticket);
+            let ticketInfo = $('<li/>').addClass(""+ticket.num+"").html(ticket.title + ',' + 
+                                   ticket.ticketDate + ',' + 
+                                   ticket.location + ',' + 
+                                   ticket.time + ',' + 
+                                   ticket.seatNum + '<button onclick="cancelTicket('+ ticket.num +')">예약취소</button>');
+            $('ul').append(ticketInfo);
+            
+         }
+         $('#divToggle').toggle();
 
 
-				for (let field in uniqueLocation) {
-					let option = document.createElement('option');
-					option.id = 'showLoacation';
-					option.innerHTML = uniqueLocation[field];
-					select.appendChild(option);
-				}
-				let submitBtn = document.createElement('button');
-				submitBtn.innerHTML = '조회';
-				submitBtn.className = "btn btn-primary";
-				submitBtn.setAttribute('onclick', 'showMovieList(event)');
-				section.appendChild(select);
-				section.appendChild(submitBtn);
-				outerdiv.appendChild(section);
-				i++;
-				if (i == uniqueTitle.length)
-					break;
-			}
-		}
-	}
-
-	function movieSelect(e) {
-		let section = document.getElementsByTagName('section');
-		// section.setAttribute('opacity','0.5');
-
-	}
-
-	//시간 날짜 조회시 관람가능 시간표시
-	function showMovieList(e) {
-		selectMovie.length = 0;
-		e.preventDefault();
-		let sideshow = document.getElementById('sideshow');
-
-		console.log(sideshow.childNodes.length);
-		for (let i = 0; sideshow.childNodes.length; i++) {
-			sideshow.childNodes[0].remove();
-
-		}
-		let deleteTimes = document.querySelectorAll('.time')
-		for (let i = 0; i < deleteTimes.length; i++) {
-			if (deleteTimes[i] != undefined)
-				deleteTimes[i].remove();
-		}
-		///////////////////////////
-		// let h3Tag = document.createElement('h3');
-		// h3Tag.innerHTML = '선택좌석';
-		// console.log(h3Tag);
-		// sideshow.appendChild(h3Tag);
-		let title = e.target.parentNode.childNodes[0].firstChild.nodeValue;
-		let date = e.target.parentNode.childNodes[2].value;
-		let location = e.target.parentNode.childNodes[3].value;
-		let sectionTag = e.target.parentNode;
-
-
-		$.ajax({
-			url: '../ShowScreenServ',
-			type: 'GET',
-			data: "title=" + title + "&date=" + date + "&location=" + location + "",
-			processData: false,
-			contentType: false,
-			dataType: 'json',
-			success: function (result) {
-				//	$('#frm>input').not('[type="submit"]').val('');
-				if (result != "") {
-					for (let obj of result) {
-						let div = document.createElement('div');
-						div.setAttribute('onclick', 'seatFnc(event)'); //시간선택 event
-						div.className = 'time';
-						div.style = "cursor:pointer";
-						div.id = '"' + obj.screentime + '"';
-						div.innerHTML = obj.screentime;
-						sectionTag.appendChild(div);
-					}
-				} else {
-					window.alert("해당날짜에 상영회차가 없습니다.");
-				}
-			},
-			error: function () {
-				alert('실패');
-			}
-		});
-	}
-	//좌석 테이블 뷰
-	function seatFnc(e) {
-		let timeTag = document.querySelectorAll(".time");
-		for (let i = 0; i < timeTag.length; i++) {
-			timeTag[i].setAttribute('onclick', 'seatFnc(event)');
-		}
-		e.target.setAttribute('onclick', '');
-		selectMovie.length = 0;
-		let aside = document.getElementById('sideshow');
-		for (let i = 0; i < sideshow.childNodes.length; i++) {
-			sideshow.childNodes[i].remove();
-		}
-		e.preventDefault();
-		let title = e.target.parentNode.childNodes[0].firstChild.nodeValue; //tile
-		let date = e.target.parentNode.childNodes[2].value; //date
-		let location = e.target.parentNode.childNodes[3].value; //location
-		let time = e.target.innerHTML; //time
+      }
+      xhtp.open('post', '../MemberServlet');
+      xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhtp.send('userId=' + userId + '&cmd=ticket');
+   };
+   //예약취소
+   function cancelTicket(e) {
+      if(!window.confirm('선택하신 예매를 취소하시겠습니까?')) {
+         return;
+      }
+      let ticketNum = e;
+      console.log(e);
+      let xhtp = new XMLHttpRequest();
+      xhtp.onload = function() {
+         let data = JSON.parse(xhtp.responseText);
+         console.log(data);
+         
+         if(data.retCode == "success") {
+            window.alert("예매가 취소되었습니다.");
+            $("."+e+"").remove();
+         }
+         
+      }
+      xhtp.open('post', '../MemberServlet');
+      xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhtp.send('ticketNum=' + ticketNum + '&cmd=cancelTicket');
+   }
+   
+   
+   $.ajax({
+      url: '../GetScreenInfo',
+      tyoe: 'get',
+      dataType: 'json',
+      success: function (result) {
+         //성공화면
+         console.log(result);
+         userShowMovie(result)
+      },
+      error: function () {
+         //에러화면
+      }
+   });
+   //초기화면
+   function userShowMovie(result) {
+      let title = [];
+      let location = [];
+      for (let field in result) {
+         title.push(result[field].title);
+         location.push(result[field].location);
+      }
+      let img;
+      let uniqueTitle = uniqueFnc(title);
+      let uniqueLocation = uniqueFnc(location);
+      let select
+      let i = 0;
+      for (let field in result) {
+         if (uniqueTitle[i] == result[field].title) {
+            img = result[field].img;
+            let section = document.createElement("section")
+            section.id = "section" + i + "";
+            let div = document.createElement("h3");
+            let outerdiv = document.getElementById('showmovie');
+            div.id = 'showtitle';
+            div.innerHTML = uniqueTitle[i];
+            section.appendChild(div);
+            div = document.createElement('div');
+            div.id = 'showposter';
+            div.style.float = 'left';
+            div.innerHTML = '<img width="200px" height="300px" ; src="../upload/' + img + '">';
+            div.setAttribute('onclick', 'movieSelect(event)');
+            section.appendChild(div);
+            let dateInput = document.createElement('input');
+            // dateInput.id='watchingDate';
+            dateInput.type = 'text';
+            section.appendChild(dateInput);
+            dateInput.setAttribute('type', 'date');
+            dateInput.id = 'showDate';
+            select = document.createElement('select');
 
 
-		for (let i = 0; i < seatRed.length; i++) {
+            for (let field in uniqueLocation) {
+               let option = document.createElement('option');
+               option.id = 'showLoacation';
+               option.innerHTML = uniqueLocation[field];
+               select.appendChild(option);
+            }
+            let submitBtn = document.createElement('button');
+            submitBtn.innerHTML = '조회';
+            submitBtn.className = "btn btn-primary";
+            submitBtn.setAttribute('onclick', 'showMovieList(event)');
+            section.appendChild(select);
+            section.appendChild(submitBtn);
+            outerdiv.appendChild(section);
+            i++;
+            if (i == uniqueTitle.length)
+               break;
+         }
+      }
+   }
+
+   function movieSelect(e) {
+      let section = document.getElementsByTagName('section');
+      // section.setAttribute('opacity','0.5');
+
+   }
+
+   //시간 날짜 조회시 관람가능 시간표시
+   function showMovieList(e) {
+      selectMovie.length = 0;
+      e.preventDefault();
+      let sideshow = document.getElementById('sideshow');
+
+      console.log(sideshow.childNodes.length);
+      for (let i = 0; sideshow.childNodes.length; i++) {
+         sideshow.childNodes[0].remove();
+
+      }
+      let deleteTimes = document.querySelectorAll('.time')
+      for (let i = 0; i < deleteTimes.length; i++) {
+         if (deleteTimes[i] != undefined)
+            deleteTimes[i].remove();
+      }
+      ///////////////////////////
+      // let h3Tag = document.createElement('h3');
+      // h3Tag.innerHTML = '선택좌석';
+      // console.log(h3Tag);
+      // sideshow.appendChild(h3Tag);
+      let title = e.target.parentNode.childNodes[0].firstChild.nodeValue;
+      let date = e.target.parentNode.childNodes[2].value;
+      let location = e.target.parentNode.childNodes[3].value;
+      let sectionTag = e.target.parentNode;
 
 
-		}
-		let deleteTimes = document.querySelectorAll('.time')
-
-		for (let i = 0; i < deleteTimes.length; i++) {
-			if (deleteTimes[i].childNodes[1] != undefined)
-				deleteTimes[i].childNodes[1].remove();
-		}
-
-
-		e.target.firstChild.nodeValue;
-		let table = document.createElement('table');
-		table.setAttribute('border', '1px');
-		table.id = 'seatTable' + e.target.firstChild.nodeValue + '';
-		table.style.textAlign = 'center';
-		table.style.width = '500px';
-		table.style.height = '400px';
-
-		let tbody = document.createElement('tbody');
-		let tr;
-		tr = document.createElement('tr');
-		for (let i = 1; i <= 80; i++) {
-			let td = document.createElement('td');
-			td.setAttribute('onclick', 'seatSelect(event)');
-
-			td.innerHTML = i;
-			td.id = 'seat' + i;
-			if (i % 10 != 0) {
-				tr.appendChild(td);
-
-			} else {
-				tr.appendChild(td);
-				tr = document.createElement('tr');
-			}
-			tbody.appendChild(tr);
-		}
-		let btn = document.createElement('button');
-		btn.innerHTML = '예매';
-		btn.setAttribute('onclick', 'selectSave()')
-		btn.className = "btn btn-primary";
-
-		td = document.createElement('td');
-		td.setAttribute('colspan', '10');
-		td.appendChild(btn);
-
-		tbody.appendChild(td);
-		table.appendChild(tbody);
-
-		let div = e.target;
-		div.appendChild(table);
-		selectSeatLoad(title, date, location, time);
-
-	}
-
-	//좌석 선택시 색변경+예매좌석
-	function seatSelect(e) {
-
-		let divTag = e.target.parentNode.parentNode.parentNode.parentNode;
-		let seatNum = e.target.innerHTML;
-		let time = divTag.firstChild.nodeValue;
-		let title = divTag.parentNode.querySelector('#showtitle').innerHTML;
-		let date = divTag.parentNode.querySelector('#showDate').value;
-		let location = divTag.parentNode.querySelector('select').value;
-
-		divTag.setAttribute('onclick', '');
-		let tdTar = e.target;
-		if (tdTar.style.backgroundColor == '') {
-			tdTar.style.backgroundColor = 'red';
-			ticketing(title, date, time, seatNum, location, 1);
-		} else {
-			tdTar.style.backgroundColor = '';
-			let aside = document.getElementById('sideshow');
-			ticketing(title, date, time, seatNum, location, 0);
-			aside.firstChild.remove();
-		}
-	}
-	//잔여좌석 체크
-	function selectSeatLoad(title, date, location, time) {
-
-		$.ajax({
-			url: '../LoadSeatServ',
-			type: 'GET',
-			data: "title=" + title + "&date=" + date + "&location=" + location + "&time=" + time + "",
-			processData: false,
-			contentType: false,
-			dataType: 'json',
-			success: function (result) {
-				for (let i = 0; i < result.length; i++) {
-					seatRed.push(result[i].seatnum);
-					let td = document.getElementById("seat" + result[i].seatnum + "");
-					td.setAttribute('onclick', 'error(event)');
-					td.style.backgroundColor = 'red';
-				}
-
-			},
-			error: function () {
-				alert('실패');
-			}
-		});
-		return seatRed;
-	}
-
-	function error(e) {
-		window.alert("이미 예약된 좌석입니다!");
-	}
-
-	//예매데이터 저장배열
-	let selectMovie = [];
-
-	//예매하기
-	function selectSave() {
-		console.log(selectMovie);
-
-		for (let i = 0; i < selectMovie.length; i++) {
-
-			$.ajax({
-				url: '../BuyMovieTicket',
-				type: 'GET',
-				data: "id=" + selectMovie[i].id + "&title=" + selectMovie[i].title + "&date=" + selectMovie[i].date +
-					"&location=" + selectMovie[i].location + "&time=" + selectMovie[i].time + "&seatNum=" + selectMovie[i]
-					.seatNum + "",
-				processData: false,
-				contentType: false,
-				dataType: 'json',
-				success: function (result) {
-
-					//입력했던 값을 지우도록.
-					$('#frm>input').not('[type="submit"]').val('');
-					alert('예매성공');
-
-				},
-				error: function () {
-					alert('실패');
-				}
-			});
-		}
+      $.ajax({
+         url: '../ShowScreenServ',
+         type: 'GET',
+         data: "title=" + title + "&date=" + date + "&location=" + location + "",
+         processData: false,
+         contentType: false,
+         dataType: 'json',
+         success: function (result) {
+            //   $('#frm>input').not('[type="submit"]').val('');
+            if (result != "") {
+               for (let obj of result) {
+                  let div = document.createElement('div');
+                  div.setAttribute('onclick', 'seatFnc(event)'); //시간선택 event
+                  div.className = 'time';
+                  div.style = "cursor:pointer";
+                  div.id = '"' + obj.screentime + '"';
+                  div.innerHTML = obj.screentime;
+                  sectionTag.appendChild(div);
+               }
+            } else {
+               window.alert("해당날짜에 상영회차가 없습니다.");
+            }
+         },
+         error: function () {
+            alert('실패');
+         }
+      });
+   }
+   //좌석 테이블 뷰
+   function seatFnc(e) {
+      let timeTag = document.querySelectorAll(".time");
+      for (let i = 0; i < timeTag.length; i++) {
+         timeTag[i].setAttribute('onclick', 'seatFnc(event)');
+      }
+      e.target.setAttribute('onclick', '');
+      selectMovie.length = 0;
+      let aside = document.getElementById('sideshow');
+      for (let i = 0; i < sideshow.childNodes.length; i++) {
+         sideshow.childNodes[i].remove();
+      }
+      e.preventDefault();
+      let title = e.target.parentNode.childNodes[0].firstChild.nodeValue; //tile
+      let date = e.target.parentNode.childNodes[2].value; //date
+      let location = e.target.parentNode.childNodes[3].value; //location
+      let time = e.target.innerHTML; //time
 
 
+      for (let i = 0; i < seatRed.length; i++) {
 
-		selectMovie.length = 0;
-	}
 
-	function ticketing(title, date, time, seatNum, location, ox) {
-		console.log(title + date + time + seatNum);
-		// let aid= "'"+title+"'";
-		if (ox == 1) {
-			let preview = document.createElement('div');
-			preview.innerHTML = " 제목 : " + title + " 상영관 : " + location + " 날짜 : " + date + " 상영시간 : " + time + " 좌석번호 : " +
-				seatNum + "";
-			let aside = document.getElementById('sideshow');
-			aside.appendChild(preview);
-			selectMovie.push({
-				"id": id,
-				"location": location,
-				"title": title,
-				"date": date,
-				"time": time,
-				"seatNum": seatNum
-			});
-		} else if (ox == 0) {
-			selectMovie.pop();
-		}
-		// selectMovie.push({"title":title});
-		console.log(selectMovie);
+      }
+      let deleteTimes = document.querySelectorAll('.time')
 
-	}
+      for (let i = 0; i < deleteTimes.length; i++) {
+         if (deleteTimes[i].childNodes[1] != undefined)
+            deleteTimes[i].childNodes[1].remove();
+      }
 
-	function uniqueFnc(obj) {
-		let uniqueArr = [];
-		obj.forEach((e) => {
-			if (!uniqueArr.includes(e)) {
-				uniqueArr.push(e);
-			}
-		});
-		return uniqueArr;
-	}
+
+      e.target.firstChild.nodeValue;
+      let table = document.createElement('table');
+      table.setAttribute('border', '1px');
+      table.id = 'seatTable' + e.target.firstChild.nodeValue + '';
+      table.style.textAlign = 'center';
+      table.style.width = '500px';
+      table.style.height = '400px';
+
+      let tbody = document.createElement('tbody');
+      let tr;
+      tr = document.createElement('tr');
+      for (let i = 1; i <= 80; i++) {
+         let td = document.createElement('td');
+         td.setAttribute('onclick', 'seatSelect(event)');
+
+         td.innerHTML = i;
+         td.id = 'seat' + i;
+         if (i % 10 != 0) {
+            tr.appendChild(td);
+
+         } else {
+            tr.appendChild(td);
+            tr = document.createElement('tr');
+         }
+         tbody.appendChild(tr);
+      }
+      let btn = document.createElement('button');
+      btn.innerHTML = '예매';
+      btn.setAttribute('onclick', 'selectSave()')
+      btn.className = "btn btn-primary";
+
+      td = document.createElement('td');
+      td.setAttribute('colspan', '10');
+      td.appendChild(btn);
+
+      tbody.appendChild(td);
+      table.appendChild(tbody);
+
+      let div = e.target;
+      div.appendChild(table);
+      selectSeatLoad(title, date, location, time);
+
+   }
+
+   //좌석 선택시 색변경+예매좌석
+   function seatSelect(e) {
+
+      let divTag = e.target.parentNode.parentNode.parentNode.parentNode;
+      let seatNum = e.target.innerHTML;
+      let time = divTag.firstChild.nodeValue;
+      let title = divTag.parentNode.querySelector('#showtitle').innerHTML;
+      let date = divTag.parentNode.querySelector('#showDate').value;
+      let location = divTag.parentNode.querySelector('select').value;
+
+      divTag.setAttribute('onclick', '');
+      let tdTar = e.target;
+      if (tdTar.style.backgroundColor == '') {
+         tdTar.style.backgroundColor = 'red';
+         ticketing(title, date, time, seatNum, location, 1);
+      } else {
+         tdTar.style.backgroundColor = '';
+         let aside = document.getElementById('sideshow');
+         ticketing(title, date, time, seatNum, location, 0);
+         aside.firstChild.remove();
+      }
+   }
+   //잔여좌석 체크
+   function selectSeatLoad(title, date, location, time) {
+
+      $.ajax({
+         url: '../LoadSeatServ',
+         type: 'GET',
+         data: "title=" + title + "&date=" + date + "&location=" + location + "&time=" + time + "",
+         processData: false,
+         contentType: false,
+         dataType: 'json',
+         success: function (result) {
+            for (let i = 0; i < result.length; i++) {
+               seatRed.push(result[i].seatnum);
+               let td = document.getElementById("seat" + result[i].seatnum + "");
+               td.setAttribute('onclick', 'error(event)');
+               td.style.backgroundColor = 'gray';
+            }
+
+         },
+         error: function () {
+            alert('실패');
+         }
+      });
+      return seatRed;
+   }
+
+   function error(e) {
+      window.alert("이미 예약된 좌석입니다!");
+   }
+
+   //예매데이터 저장배열
+   let selectMovie = [];
+
+   //예매하기
+   function selectSave() {
+      console.log(selectMovie);
+
+      for (let i = 0; i < selectMovie.length; i++) {
+      
+         $.ajax({
+            url: '../BuyMovieTicket',
+            type: 'GET',
+            data: "id=" + selectMovie[i].id + "&title=" + selectMovie[i].title + "&date=" + selectMovie[i].date +
+               "&location=" + selectMovie[i].location + "&time=" + selectMovie[i].time + "&seatNum=" + selectMovie[i]
+               .seatNum + "",
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function (ticket) {
+            let ticketInfo = $('<li/>').addClass(""+ticket[0].num+"").html(ticket[0].title + ',' + 
+                       ticket[0].startdate + ',' + 
+                       ticket[0].location + ',' + 
+                       ticket[0].screentime + ',' + 
+                       ticket[0].seatnum + '<button onclick="cancelTicket('+ ticket[0].num +')">예약취소</button>');
+$('ul').append(ticketInfo);
+
+               let table=document.querySelector('table');
+               table.remove();
+               let timeTag = document.querySelectorAll(".time");
+               for (let i = 0; i < timeTag.length; i++) {
+                  timeTag[i].setAttribute('onclick', 'seatFnc(event)');
+               }
+               selectMovie.length=0;
+               let sideshow = document.getElementById('sideshow');
+
+               console.log(sideshow.childNodes.length);
+               for (let i = 0; sideshow.childNodes.length; i++) {
+                  sideshow.childNodes[0].remove();
+
+  
+               }
+               //입력했던 값을 지우도록.
+               $('#frm>input').not('[type="submit"]').val('');
+               alert('예매성공');
+
+            },
+            error: function () {
+               alert('실패');
+            }
+         });
+      }
+
+
+
+      selectMovie.length = 0;
+   }
+
+   function ticketing(title, date, time, seatNum, location, ox) {
+      console.log(title + date + time + seatNum);
+      // let aid= "'"+title+"'";
+      if (ox == 1) {
+         let preview = document.createElement('div');
+         preview.innerHTML = " 제목 : " + title + " 상영관 : " + location + " 날짜 : " + date + " 상영시간 : " + time + " 좌석번호 : " +
+            seatNum + "";
+         let aside = document.getElementById('sideshow');
+         aside.appendChild(preview);
+         selectMovie.push({
+            "id": id,
+            "location": location,
+            "title": title,
+            "date": date,
+            "time": time,
+            "seatNum": seatNum
+         });
+      } else if (ox == 0) {
+         for(let i=0;i<selectMovie.length;i++){
+            if(selectMovie[i].seatNum==seatNum){
+               console.log("1번");
+               console.log(seatNum);
+               console.log("2번");
+               console.log(selectMovie[i].seatNum);
+               selectMovie.splice(i,1);
+      console.log(selectMovie.seatNum);
+            }
+         }
+      }
+      // selectMovie.push({"title":title});
+
+   }
+
+   function uniqueFnc(obj) {
+      let uniqueArr = [];
+      obj.forEach((e) => {
+         if (!uniqueArr.includes(e)) {
+            uniqueArr.push(e);
+         }
+      });
+      return uniqueArr;
+   }
 </script>
 </body>
 

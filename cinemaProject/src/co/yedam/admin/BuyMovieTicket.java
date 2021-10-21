@@ -1,7 +1,7 @@
 package co.yedam.admin;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +24,6 @@ public class BuyMovieTicket extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		
 		String id = request.getParameter("id");
 		String title = request.getParameter("title");
 		String date = request.getParameter("date");
@@ -33,9 +32,9 @@ public class BuyMovieTicket extends HttpServlet {
 		String seatNum = request.getParameter("seatNum");
 		System.out.println(id+title+date+location+time+seatNum);
 		FileDAO dao=new FileDAO();
-		int a=dao.TicketingUp(id, title, date, location, time, seatNum);
+		List<FileVO2> list=dao.TicketingUp(id, title, date, location, time, seatNum);
 		Gson gson = new GsonBuilder().create();
-		response.getWriter().println(gson.toJson(a));
+		response.getWriter().println(gson.toJson(list));
 
 
 	}

@@ -35,19 +35,19 @@ public class MovieUploadServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println("요기3");
 		int seatCnt = 80; //좌석수
 		ServletContext context = getServletContext();
 		String saveDir = context.getRealPath("upload");
 		int maxSize = 1024 * 1024 * 30;
 		String encoding = "utf-8";
+		System.out.println(saveDir);
 		MultipartRequest multi = //
 				new MultipartRequest(request, saveDir, maxSize//
 						, encoding, new DefaultFileRenamePolicy());
 		String title = multi.getParameter("title");
 		String startdate = multi.getParameter("startdate");
 		String enddate = multi.getParameter("enddate");
-
+		System.out.println(title+seatCnt);
 		Date sdate = null, edate = null;
 		try {
 			sdate = simpleDateFormat.parse(startdate);
@@ -77,6 +77,7 @@ public class MovieUploadServlet extends HttpServlet {
 				String a = String.format("%1$tY-%1$tm-%1$td", calendar);
 
 				FileDAO dao = new FileDAO();
+				System.out.println(title+ a+  screenTime+location+ img+seatCnt);
 				FileVO vo = dao.uploadFile(title, a,  screenTime,location, img,seatCnt);
 //				Gson gson = new GsonBuilder().create();
 

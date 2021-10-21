@@ -56,11 +56,11 @@ public class FileDAO extends DAO {
 		
 	}
 	
-	
-	public int TicketingUp(String id , String title , String ticketdate ,String location , String time,String seatnum) {
+	//예매하기
+	public List<FileVO2> TicketingUp(String id , String title , String ticketdate ,String location , String time,String seatnum) {
 		connect();
 		String sql = "insert into ticketing values(TICKETNUM.nextval,?,?,?,?,?,?)";
-		
+		FileVO2 vo= new FileVO2();
 		try {
 			psmt=conn.prepareStatement(sql);
 			psmt.setString(1, id);
@@ -69,12 +69,30 @@ public class FileDAO extends DAO {
 			psmt.setString(4, location);
 			psmt.setString(5, time);
 			psmt.setString(6, seatnum);
+			psmt.executeUpdate();
+		sql="select * from ticketing where seatnum=?";
+			psmt=conn.prepareStatement(sql);
+			psmt.setString(1, seatnum);
 			rs=psmt.executeQuery();
-			return 1;
+			List<FileVO2> list=new ArrayList<FileVO2>();
+			while(rs.next()) {
+				vo.setNum(rs.getInt("num"));
+				vo.setTitle(rs.getString("title"));
+				vo.setId(rs.getString("id"));
+				vo.setStartdate(rs.getString("ticketdate"));
+				vo.setLocation(rs.getString("location"));
+				vo.setScreentime(rs.getString("time"));
+				vo.setSeatnum(rs.getString("seatnum"));
+				list.add(vo);
+				
+			}
+			System.out.println(list);
+			
+			return list;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return null;
 		
 	}
 	//일반사용자가 볼 리스트
