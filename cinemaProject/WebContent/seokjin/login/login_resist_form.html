@@ -1,229 +1,229 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Welcome to Daegu Cinema</title>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="style.css">
-	<script src="../../jquery/jquery-3.6.0.min.js"></script>
+   <meta charset="UTF-8">
+   <title>Welcome to Daegu Cinema</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="style.css">
+   <script src="../../jquery/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-	<div class="wrap">
-		<div class="title">
-			<h1>Daegu Cinema</h1>
-		</div>
-		<div class="form-wrap">
-			<div class="button-wrap">
-				<div id="btn"></div>
-				<button type="button" class="togglebtn" onclick="login()">LOGIN</button>
-				<button type="button" class="togglebtn" onclick="register()">REGISTER</button>
-			</div>
-			<!-- <div class="social-icons">
-				<img src="img/fb.png" alt="facebook">
-				<img src="img/tw.png" alt="twitter">
-				<img src="img/gl.png" alt="google">
-			</div> -->
-			<form id="login" action="" class="input-group">
-				<input type="text" id="loginId" class="input-field" placeholder="Enter Id" required>
-				<input type="password" id="loginPw" class="input-field" placeholder="Enter Password" required>
-				<button type="button" class="submit" onclick="userLogin()">Login</button>
-			</form>
-			<form id="register" action="" class="input-group">
-				<input type="text" id="joinId" class="input-field" placeholder="Id" required>
-				<input type="password" id="joinPw" class="input-field" placeholder="Password" required>
-				<input type="password" id="pwCheck" class="input-field" placeholder="Password Check" required>
-				<input type="text" id="joinName" class="input-field" placeholder="Name" required>
-				<input type='radio' name='gender' value='male' checked>남성
-				<input type='radio' name='gender' value='female'>여성<br>
-				생년월일
-				<select name="yy" id="year"></select>
-				<select name="mm" id="month"></select>
-				<select name="dd" id="day"></select>
-				<!-- <input type="text" id="joinBirth" class="input-field" placeholder="Birth ex)YYMMDD" required> -->
-				<button type="button" class="submit" onclick="join()">REGISTER</button>
-			</form>
-		</div>
-	</div>
-	<script>
-	
+   <div class="wrap">
+      <div class="title">
+         <h1>Daegu Cinema</h1>
+      </div>
+      <div class="form-wrap">
+         <div class="button-wrap">
+            <div id="btn"></div>
+            <button type="button" class="togglebtn" onclick="login()">LOGIN</button>
+            <button type="button" class="togglebtn" onclick="register()">REGISTER</button>
+         </div>
+         <!-- <div class="social-icons">
+            <img src="img/fb.png" alt="facebook">
+            <img src="img/tw.png" alt="twitter">
+            <img src="img/gl.png" alt="google">
+         </div> -->
+         <form id="login" action="" class="input-group">
+            <input type="text" id="loginId" class="input-field" placeholder="Enter Id" required>
+            <input type="password" id="loginPw" class="input-field" placeholder="Enter Password" required>
+            <button type="button" class="submit" onclick="userLogin()">Login</button>
+         </form>
+         <form id="register" action="" class="input-group">
+            <input type="text" id="joinId" class="input-field" placeholder="ID (5~12자의 영문 소문자와 숫자)" required>
+            <input type="password" id="joinPw" class="input-field" placeholder="PW (숫자+영문자+특수문자 조합으로 8자리 이상)" required>
+            <input type="password" id="pwCheck" class="input-field" placeholder="PW check" required>
+            <input type="text" id="joinName" class="input-field" placeholder="Name" required>
+            <input type='radio' name='gender' value='male' checked>남성
+            <input type='radio' name='gender' value='female'>여성<br>
+            생년월일
+            <select name="yy" id="year"></select>
+            <select name="mm" id="month"></select>
+            <select name="dd" id="day"></select>
+            <!-- <input type="text" id="joinBirth" class="input-field" placeholder="Birth ex)YYMMDD" required> -->
+            <button type="button" class="submit" onclick="join()">REGISTER</button>
+         </form>
+      </div>
+   </div>
+   <script>
+   
 
-		$(document).ready(function(){            
-			var now = new Date();
-			var year = now.getFullYear();
-			var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
-			var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
-			//년도              
-			for(var i = 1900 ; i <= year ; i++) {
-				$('#year').append('<option value="' + i + '">' + i + '년</option>');    
-			}
+      $(document).ready(function(){            
+         var now = new Date();
+         var year = now.getFullYear();
+         var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
+         var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
+         //년도              
+         for(var i = 1900 ; i <= year ; i++) {
+            $('#year').append('<option value="' + i + '">' + i + '년</option>');    
+         }
 
-			// 월별            
-			for(var i=1; i <= 12; i++) {
-				var mm = i > 9 ? i : "0"+i ;            
-				$('#month').append('<option value="' + mm + '">' + mm + '월</option>');    
-			}
-			
-			// 일별
-			for(var i=1; i <= 31; i++) {
-				var dd = i > 9 ? i : "0"+i ;            
-				$('#day').append('<option value="' + dd + '">' + dd+ '일</option>');    
-			}
-			$("#year  > option[value="+year+"]").attr("selected", "true");        
-			$("#month  > option[value="+mon+"]").attr("selected", "true");    
-			$("#day  > option[value="+day+"]").attr("selected", "true");       
-		})
+         // 월별            
+         for(var i=1; i <= 12; i++) {
+            var mm = i > 9 ? i : "0"+i ;            
+            $('#month').append('<option value="' + mm + '">' + mm + '월</option>');    
+         }
+         
+         // 일별
+         for(var i=1; i <= 31; i++) {
+            var dd = i > 9 ? i : "0"+i ;            
+            $('#day').append('<option value="' + dd + '">' + dd+ '일</option>');    
+         }
+         $("#year  > option[value="+year+"]").attr("selected", "true");        
+         $("#month  > option[value="+mon+"]").attr("selected", "true");    
+         $("#day  > option[value="+day+"]").attr("selected", "true");       
+      })
 
-		var x = document.getElementById("login");
-		var y = document.getElementById("register");
-		var z = document.getElementById("btn");
+      var x = document.getElementById("login");
+      var y = document.getElementById("register");
+      var z = document.getElementById("btn");
 
-		function login() {
-			x.style.left = "50px";
-			y.style.left = "450px";
-			z.style.left = "0";
-			$('#joinId').val('');
-			$('#joinPw').val('');
-			$('#pwCheck').val('');
-			$('#joinName').val('');
-			$('input[name=gender]:checked').val('');
-		}
+      function login() {
+         x.style.left = "50px";
+         y.style.left = "450px";
+         z.style.left = "0";
+         $('#joinId').val('');
+         $('#joinPw').val('');
+         $('#pwCheck').val('');
+         $('#joinName').val('');
+         $('input[name=gender]:checked').val('');
+      }
 
-		function register() {
-			x.style.left = "-400px";
-			y.style.left = "50px";
-			z.style.left = "110px";
-			$('#loginId').val('');
-			$('#loginPw').val('');
-		}
+      function register() {
+         x.style.left = "-400px";
+         y.style.left = "50px";
+         z.style.left = "110px";
+         $('#loginId').val('');
+         $('#loginPw').val('');
+      }
 
-		// 쿠키(보류)
-		function setCookie(userId) {
-			document.cookie = userId;
-		}
-		
-		function join() {
-			let y = $('#year').val().substring(2);
-			let m = $('#month').val();
-			let d = $('#day').val();
-			console.log(y+m+d);
-			let result = y+m+d;
-			console.log(result);
-			
-		}
+      // 쿠키(보류)
+      function setCookie(userId) {
+         document.cookie = userId;
+      }
+      
+      function join() {
+         let y = $('#year').val().substring(2);
+         let m = $('#month').val();
+         let d = $('#day').val();
+         console.log(y+m+d);
+         let result = y+m+d;
+         console.log(result);
+         
+      }
 
-		// 로그인
-		function userLogin() {
-			let id = $('#loginId').val();
-			let pw = $('#loginPw').val();
-			console.log(id);
-			console.log(pw);
-			
-			let xhtp = new XMLHttpRequest();
-			xhtp.onload = function() {
-				let data = JSON.parse(xhtp.responseText);
-				console.log(data);
-				let curId = $('#loginId').val();
-				if(data.retCode == 'admin'){
-					$('#loginId').val('');
-					$('#loginPw').val('');
-					window.alert('관리자로 로그인하였습니다.');
-					setCookie(curId);
-					// console.log(document.cookie);
-					window.location.href='../../admin/test.html?userId='+curId;
-				} else if(data.retCode == 'member') {
-					$('#loginId').val('');
-					$('#loginPw').val('');
-					window.location.href='../../admin/MovieTicketing.html?userId='+curId;
-				} else if(data.retCode == 'fail') {
-					$('#loginId').val('');
-					$('#loginPw').val('');
-					window.alert('아이디 또는 패스워드가 틀렸습니다.');
-				}
-			}
-			xhtp.open('post', '../../MemberServlet');
-			xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhtp.send('id=' + id + '&pw=' + pw + '&cmd=login');
-		}
+      // 로그인
+      function userLogin() {
+         let id = $('#loginId').val();
+         let pw = $('#loginPw').val();
+         console.log(id);
+         console.log(pw);
+         
+         let xhtp = new XMLHttpRequest();
+         xhtp.onload = function() {
+            let data = JSON.parse(xhtp.responseText);
+            console.log(data);
+            let curId = $('#loginId').val();
+            if(data.retCode == 'admin'){
+               $('#loginId').val('');
+               $('#loginPw').val('');
+               window.alert('관리자로 로그인하였습니다.');
+               setCookie(curId);
+               // console.log(document.cookie);
+               window.location.href='../../admin/test.html?userId='+curId;
+            } else if(data.retCode == 'member') {
+               $('#loginId').val('');
+               $('#loginPw').val('');
+               window.location.href='../../admin/MovieTicketing.html?userId='+curId;
+            } else if(data.retCode == 'fail') {
+               $('#loginId').val('');
+               $('#loginPw').val('');
+               window.alert('아이디 또는 패스워드가 틀렸습니다.');
+            }
+         }
+         xhtp.open('post', '../../MemberServlet');
+         xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+         xhtp.send('id=' + id + '&pw=' + pw + '&cmd=login');
+      }
 
-		// 회원가입
-		function join() {
-			let id = $('#joinId').val();
-			let pw = $('#joinPw').val();
-			let pwCheck = $('#pwCheck').val();
-			let name = $('#joinName').val();
-			let gender = $('input[name=gender]:checked').val();
-
-
-			//생년월일
-			let y = $('#year').val().substring(2);
-			let m = $('#month').val();
-			let d = $('#day').val();
-			// console.log(y+m+d);
-			let birth = y+m+d;
-
-			console.log(id);
-			console.log(pw);
-			console.log(name);
-			console.log(gender);
-			console.log(birth);
-
-			//아이디 검사
-			let idCheck = /^[a-z][a-z\d]{4,11}$/;
-			if(!idCheck.test(id)) {
-				$('#joinId').val('');
-				window.alert('아이디는 4~12자의 영문 소문자와 숫자로만 입력해주세요.');
-				return;
-			}
-
-			// 패스워드 검사
-			let passwordCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-			if(!passwordCheck.test(pw)) {
-				$('#joinPw').val('');
-				$('#pwCheck').val('');
-				window.alert('비밀번호는 숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
-				return;
-			}
-
-			// 비밀번호 확인 검사
-			if(pw != pwCheck) {
-				$('#joinPw').val('');
-				$('#pwCheck').val('');
-				window.alert('비밀번호를 확인하세요.');
-				return;
-			}
-
-			// 이름 검사
-			let nameCheck = /^[가-힣]+$/;
-			if(!nameCheck.test(name)) {
-				$('#joinName').val('');
-				window.alert('잘못된 형식의 이름입니다.');
-				return;
-			}
+      // 회원가입
+      function join() {
+         let id = $('#joinId').val();
+         let pw = $('#joinPw').val();
+         let pwCheck = $('#pwCheck').val();
+         let name = $('#joinName').val();
+         let gender = $('input[name=gender]:checked').val();
 
 
-			let xhtp = new XMLHttpRequest();
-			xhtp.onload = function() {
-				console.log('ghey');
-				let data = JSON.parse(xhtp.responseText);
-				console.log(data);
-				if(data.retCode == 'success'){
-					window.alert('회원가입이 완료되었습니다.');
-					window.location.href='login_resist_form.html';
-					return;
-				}
-				$('#joinId').val('');
-				$('#joinPw').val('');
-				$('#pwCheck').val('');
-				$('#joinName').val('');
-				window.alert('이미 존재하는 아이디입니다.');
-			} 
-			xhtp.open('post', '../../MemberServlet');
-			xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhtp.send('id=' + id + '&pw=' + pw + '&name=' + name + '&gender=' + gender + '&birth=' + birth + '&cmd=join');
-		}
-	</script>
+         //생년월일
+         let y = $('#year').val().substring(2);
+         let m = $('#month').val();
+         let d = $('#day').val();
+         // console.log(y+m+d);
+         let birth = y+m+d;
+
+         console.log(id);
+         console.log(pw);
+         console.log(name);
+         console.log(gender);
+         console.log(birth);
+
+         //아이디 검사
+         let idCheck = /^[a-z][a-z\d]{4,11}$/;
+         if(!idCheck.test(id)) {
+            $('#joinId').val('');
+            window.alert('아이디는 5~12자의 영문 소문자와 숫자로만 입력해주세요.');
+            return;
+         }
+
+         // 패스워드 검사
+         let passwordCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+         if(!passwordCheck.test(pw)) {
+            $('#joinPw').val('');
+            $('#pwCheck').val('');
+            window.alert('비밀번호는 숫자+영문자+특수문자 조합으로 8자리 이상 사용해야 합니다.');
+            return;
+         }
+
+         // 비밀번호 확인 검사
+         if(pw != pwCheck) {
+            $('#joinPw').val('');
+            $('#pwCheck').val('');
+            window.alert('비밀번호를 확인하세요.');
+            return;
+         }
+
+         // 이름 검사
+         let nameCheck = /^[가-힣]+$/;
+         if(!nameCheck.test(name)) {
+            $('#joinName').val('');
+            window.alert('잘못된 형식의 이름입니다.');
+            return;
+         }
+
+
+         let xhtp = new XMLHttpRequest();
+         xhtp.onload = function() {
+            console.log('ghey');
+            let data = JSON.parse(xhtp.responseText);
+            console.log(data);
+            if(data.retCode == 'success'){
+               window.alert('회원가입이 완료되었습니다.');
+               window.location.href='login_resist_form.html';
+               return;
+            }
+            $('#joinId').val('');
+            $('#joinPw').val('');
+            $('#pwCheck').val('');
+            $('#joinName').val('');
+            window.alert('이미 존재하는 아이디입니다.');
+         } 
+         xhtp.open('post', '../../MemberServlet');
+         xhtp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+         xhtp.send('id=' + id + '&pw=' + pw + '&name=' + name + '&gender=' + gender + '&birth=' + birth + '&cmd=join');
+      }
+   </script>
 </body>
 </html>
